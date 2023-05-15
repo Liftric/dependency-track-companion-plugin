@@ -5,10 +5,12 @@ import org.gradle.api.Project
 import com.liftric.extensions.*
 import com.liftric.tasks.*
 
+internal const val extensionName = "dependencyTrackCompanion"
+
 class DepTrackHelperPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         val extension =
-            project.extensions.create("DepTrackHelperPlugin", DepTrackHelperExtension::class.java, project)
+            project.extensions.create(extensionName, DepTrackHelperExtension::class.java, project)
 
         extension.filePath.convention("reports/bom.json")
         extension.outputPath.convention("reports/")
@@ -50,4 +52,9 @@ class DepTrackHelperPlugin : Plugin<Project> {
             task.getSuppressedVuln.set(extension.getSuppressedVulnData)
         }
     }
+}
+
+fun Project.dependencyTrackCompanion(): DepTrackHelperExtension {
+    return extensions.getByName(extensionName) as? DepTrackHelperExtension
+        ?: throw IllegalStateException("$extensionName is not of the correct type")
 }

@@ -37,6 +37,7 @@ gradlePlugin {
         create("dependency-track-companion-plugin") {
             id = "${project.property("pluginGroup")}.${project.property("pluginName")}"
             implementationClass = "${project.property("pluginGroup")}.DepTrackHelperPlugin"
+            displayName = project.property("pluginName").toString()
             version = project.property("pluginVersion").toString()
             group = project.property("pluginGroup").toString()
         }
@@ -52,21 +53,9 @@ dockerCompose {
     buildBeforeUp.set(true)
 }
 
-//DepTrackHelperPlugin {
-//}
-
-//tasks.test {
-//    useJUnitPlatform()
-//    testLogging {
-//        events("passed", "skipped", "failed")
-//    }
-//}
-//
-//tasks.withType<JavaCompile>().configureEach {
-//    options.release.set(8)
-//}
-//
-//// config JVM target to 1.8 for kotlin compilation tasks
-//tasks.withType<KotlinCompile>().configureEach {
-//    kotlinOptions.jvmTarget = "1.8"
-//}
+tasks.test {
+    useJUnitPlatform()
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
+}
