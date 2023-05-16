@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
+
 plugins {
     `java-gradle-plugin`
     `maven-publish`
@@ -14,6 +16,7 @@ group = project.property("pluginGroup").toString()
 
 repositories {
     mavenCentral()
+    gradlePluginPortal()
 }
 
 dependencies {
@@ -30,6 +33,8 @@ dependencies {
 
     testImplementation(platform("org.junit:junit-bom:5.9.3"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation(gradleTestKit())
+    testImplementation("com.liftric:dependency-track-companion-plugin:$version")
 }
 
 gradlePlugin {
@@ -58,4 +63,29 @@ tasks.test {
     testLogging {
         events("passed", "skipped", "failed")
     }
+    systemProperty("org.gradle.testkit.dir", gradle.gradleUserHomeDir)
+}
+
+sourceSets {
+    create("integrationTest") {
+        withConvention(KotlinSourceSet::class) {
+            kotlin.srcDir("src/integrationTest/kotlin")
+            resources.srcDir("src/integrationTest/resources")
+            compileClasspath += sourceSets["main"].output + configurations["testRuntimeClasspath"]
+            runtimeClasspath += output + compileClasspath + sourceSets["test"].runtimeClasspath
+        }
+    }
+}
+
+task<Test>("integrationTest") {
+    description = "Runs the integration tests"
+    group = "verification"
+    testClassesDirs = sourceSets["integrationTest"].output.classesDirs
+    classpath = sourceSets["integrationTest"].runtimeClasspath
+    mustRunAfter(tasks["test"])
+    useJUnitPlatform()
+}
+
+tasks.check {
+    dependsOn("integrationTest")
 }

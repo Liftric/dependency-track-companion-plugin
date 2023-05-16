@@ -17,7 +17,6 @@ class DepTrackHelperPlugin : Plugin<Project> {
         extension.outputFilename.convention("vex")
 
         project.tasks.register("generateVex", GenerateVexTask::class.java) { task ->
-            task.url.set(extension.url)
             task.filePath.set(extension.filePath)
             task.outputPath.set(extension.outputPath)
             task.outputFilename.set(extension.outputFilename)

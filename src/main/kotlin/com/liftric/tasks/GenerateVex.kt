@@ -22,9 +22,6 @@ import java.util.Date
 
 abstract class GenerateVexTask : DefaultTask() {
     @get:Input
-    abstract val url: Property<String>
-
-    @get:Input
     abstract val filePath: Property<String>
 
     @get:Input
