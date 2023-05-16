@@ -6,6 +6,7 @@ import com.liftric.extensions.*
 import com.liftric.tasks.*
 
 internal const val extensionName = "dependencyTrackCompanion"
+internal const val taskGroup = "Dependency Track Companion Plugin"
 
 class DepTrackHelperPlugin : Plugin<Project> {
     override fun apply(project: Project) {
@@ -16,7 +17,15 @@ class DepTrackHelperPlugin : Plugin<Project> {
         extension.outputPath.convention("reports/")
         extension.outputFilename.convention("vex")
 
+        project.tasks.register("runDepTrackWorkflow") { task ->
+            task.group = taskGroup
+            task.description = "Runs all tasks to upload SBOM, generate VEX, upload VEX, get outdated dependencies and get suppressed vulnerabilities"
+            task.dependsOn("uploadSbom", "generateVex", "uploadVex", "getOutdatedDependencies", "getSuppressedVuln")
+        }
+
         project.tasks.register("generateVex", GenerateVexTask::class.java) { task ->
+            task.group = taskGroup
+            task.description = "Generates VEX file"
             task.filePath.set(extension.filePath)
             task.outputPath.set(extension.outputPath)
             task.outputFilename.set(extension.outputFilename)
@@ -25,6 +34,8 @@ class DepTrackHelperPlugin : Plugin<Project> {
         }
 
         project.tasks.register("uploadSbom", UploadSBOMTask::class.java) { task ->
+            task.group = taskGroup
+            task.description = "Uploads SBOM file"
             task.url.set(extension.url)
             task.apiKey.set(extension.apiKey)
             task.filePath.set(extension.filePath)
@@ -32,6 +43,8 @@ class DepTrackHelperPlugin : Plugin<Project> {
         }
 
         project.tasks.register("uploadVex", UploadVexTask::class.java) { task ->
+            task.group = taskGroup
+            task.description = "Uploads VEX file"
             task.outputPath.set(extension.outputPath)
             task.outputFilename.set(extension.outputFilename)
             task.apiKey.set(extension.apiKey)
@@ -40,12 +53,16 @@ class DepTrackHelperPlugin : Plugin<Project> {
         }
 
         project.tasks.register("getOutdatedDependencies", GetOutdatedDependenciesTask::class.java) { task ->
+            task.group = taskGroup
+            task.description = "Gets outdated dependencies"
             task.apiKey.set(extension.apiKey)
             task.url.set(extension.url)
             task.getOutdatedDependencies.set(extension.getOutdatedDependenciesData)
         }
 
         project.tasks.register("getSuppressedVuln", GetSuppressedVulnTask::class.java) { task ->
+            task.group = taskGroup
+            task.description = "Gets suppressed vulnerabilities"
             task.apiKey.set(extension.apiKey)
             task.url.set(extension.url)
             task.getSuppressedVuln.set(extension.getSuppressedVulnData)
