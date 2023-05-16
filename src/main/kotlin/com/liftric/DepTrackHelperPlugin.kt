@@ -17,23 +17,7 @@ class DepTrackHelperPlugin : Plugin<Project> {
         extension.outputPath.convention("reports/")
         extension.outputFilename.convention("vex")
 
-        project.tasks.register("runDepTrackWorkflow") { task ->
-            task.group = taskGroup
-            task.description = "Runs all tasks to upload SBOM, generate VEX, upload VEX, get outdated dependencies and get suppressed vulnerabilities"
-            task.dependsOn("uploadSbom", "generateVex", "uploadVex", "getOutdatedDependencies", "getSuppressedVuln")
-        }
-
-        project.tasks.register("generateVex", GenerateVexTask::class.java) { task ->
-            task.group = taskGroup
-            task.description = "Generates VEX file"
-            task.filePath.set(extension.filePath)
-            task.outputPath.set(extension.outputPath)
-            task.outputFilename.set(extension.outputFilename)
-            task.vexComponent.set(extension.vexComponentList)
-            task.vexVulnerability.set(extension.vexVulnerabilityList)
-        }
-
-        project.tasks.register("uploadSbom", UploadSBOMTask::class.java) { task ->
+        val uploadSbom = project.tasks.register("uploadSbom", UploadSBOMTask::class.java) { task ->
             task.group = taskGroup
             task.description = "Uploads SBOM file"
             task.url.set(extension.url)
@@ -42,7 +26,18 @@ class DepTrackHelperPlugin : Plugin<Project> {
             task.uploadSBOM.set(extension.uploadSBOMData)
         }
 
-        project.tasks.register("uploadVex", UploadVexTask::class.java) { task ->
+        val generateVex = project.tasks.register("generateVex", GenerateVexTask::class.java) { task ->
+            task.group = taskGroup
+            task.description = "Generates VEX file"
+            task.filePath.set(extension.filePath)
+            task.outputPath.set(extension.outputPath)
+            task.outputFilename.set(extension.outputFilename)
+            task.vexComponent.set(extension.vexComponentList)
+            task.vexVulnerability.set(extension.vexVulnerabilityList)
+            task.mustRunAfter(uploadSbom)
+        }
+
+        val uploadVex = project.tasks.register("uploadVex", UploadVexTask::class.java) { task ->
             task.group = taskGroup
             task.description = "Uploads VEX file"
             task.outputPath.set(extension.outputPath)
@@ -50,22 +45,31 @@ class DepTrackHelperPlugin : Plugin<Project> {
             task.apiKey.set(extension.apiKey)
             task.url.set(extension.url)
             task.uploadVex.set(extension.uploadVexData)
+            task.mustRunAfter(generateVex)
         }
 
-        project.tasks.register("getOutdatedDependencies", GetOutdatedDependenciesTask::class.java) { task ->
+        val getOutdatedDependencies = project.tasks.register("getOutdatedDependencies", GetOutdatedDependenciesTask::class.java) { task ->
             task.group = taskGroup
             task.description = "Gets outdated dependencies"
             task.apiKey.set(extension.apiKey)
             task.url.set(extension.url)
             task.getOutdatedDependencies.set(extension.getOutdatedDependenciesData)
+            task.mustRunAfter(uploadVex)
         }
 
-        project.tasks.register("getSuppressedVuln", GetSuppressedVulnTask::class.java) { task ->
+        val getSuppressedVuln = project.tasks.register("getSuppressedVuln", GetSuppressedVulnTask::class.java) { task ->
             task.group = taskGroup
             task.description = "Gets suppressed vulnerabilities"
             task.apiKey.set(extension.apiKey)
             task.url.set(extension.url)
             task.getSuppressedVuln.set(extension.getSuppressedVulnData)
+            task.mustRunAfter(getOutdatedDependencies)
+        }
+
+        project.tasks.register("runDepTrackWorkflow") { task ->
+            task.group = taskGroup
+            task.description = "Runs all tasks to upload SBOM, generate VEX, upload VEX, get outdated dependencies and get suppressed vulnerabilities"
+            task.dependsOn(uploadSbom, generateVex, uploadVex, getOutdatedDependencies, getSuppressedVuln)
         }
     }
 }

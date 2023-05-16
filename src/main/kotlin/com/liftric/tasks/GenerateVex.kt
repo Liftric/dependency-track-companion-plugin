@@ -49,6 +49,7 @@ abstract class GenerateVexTask : DefaultTask() {
 
         processCycloneDXReport(filePathValue, vexComponentList, vexVulnerabilityList)
         writeVexFile(outputFile)
+        println("Generated VEX file")
     }
 
     private fun processCycloneDXReport(

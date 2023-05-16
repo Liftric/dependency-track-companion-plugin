@@ -38,6 +38,7 @@ abstract class UploadVexTask : DefaultTask() {
             val formData = uploadVexValue.toNonNullPairList()
             val dt = DependencyTrack(apiKeyValue, urlValue)
             dt.uploadVex(vexFile, formData)
+            println("Uploaded VEX file to Dependency-Track")
         } else {
             throw Exception("Vex file not found, run './gradlew generateVex'")
         }
