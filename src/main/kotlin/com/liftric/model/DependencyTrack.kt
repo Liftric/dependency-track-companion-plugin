@@ -17,7 +17,6 @@ data class RepositoryMeta(
     val latestVersion: String
 )
 
-
 @Serializable
 data class Project(
     val uuid: String,
@@ -53,7 +52,6 @@ data class FindingComponent(
     val version: String,
     val purl: String,
     val project: String,
-    val latestVersion: String,
 )
 
 @Serializable

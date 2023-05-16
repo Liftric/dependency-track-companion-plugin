@@ -34,7 +34,12 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:5.9.3"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation(gradleTestKit())
-    testImplementation("com.liftric:dependency-track-companion-plugin:$version")
+    testImplementation("io.ktor:ktor-client-cio:$ktorVersion")
+    testImplementation("io.ktor:ktor-client-core:$ktorVersion")
+    testImplementation("io.ktor:ktor-client-json:$ktorVersion")
+    testImplementation("io.ktor:ktor-client-serialization:$ktorVersion")
+    testImplementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+    testImplementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
 }
 
 gradlePlugin {
@@ -50,6 +55,7 @@ gradlePlugin {
 }
 
 dockerCompose {
+    // Docker Compose v1 is needed for this Plugin to work
     useComposeFiles.set(listOf("docker-compose.yml"))
     waitForTcpPorts.set(true)
     captureContainersOutput.set(true)
@@ -77,7 +83,7 @@ sourceSets {
     }
 }
 
-task<Test>("integrationTest") {
+val integrationTest = task<Test>("integrationTest") {
     description = "Runs the integration tests"
     group = "verification"
     testClassesDirs = sourceSets["integrationTest"].output.classesDirs
@@ -85,6 +91,7 @@ task<Test>("integrationTest") {
     mustRunAfter(tasks["test"])
     useJUnitPlatform()
 }
+dockerCompose.isRequiredBy(integrationTest)
 
 tasks.check {
     dependsOn("integrationTest")

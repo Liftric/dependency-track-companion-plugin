@@ -71,4 +71,3 @@ fun UploadSBOM.toNonNullPairList(): List<Pair<String, String>> {
 
     return list
 }
-
