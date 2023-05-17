@@ -1,18 +1,15 @@
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 
+@Suppress("DSL_SCOPE_VIOLATION") // IntelliJ incorrectly marks libs as not callable
 plugins {
     `java-gradle-plugin`
     `maven-publish`
-    id("org.jetbrains.kotlin.jvm") version "1.8.20"
-    kotlin("plugin.serialization").version("1.8.20")
-    id("com.avast.gradle.docker-compose") version "0.16.12"
+    alias(libs.plugins.kotlinJvm)
+    alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.dockerCompose)
 }
 
-val ktorVersion: String by project
-val kotlinVersion: String by project
 val dtApiKey: String by project
-version = project.property("pluginVersion").toString()
-group = project.property("pluginGroup").toString()
 
 repositories {
     mavenCentral()
@@ -20,26 +17,26 @@ repositories {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("org.cyclonedx:cyclonedx-core-java:7.3.2")
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
-    implementation("io.ktor:ktor-client-cio:$ktorVersion")
-    implementation("io.ktor:ktor-client-core:$ktorVersion")
-    implementation("io.ktor:ktor-client-json:$ktorVersion")
-    implementation("io.ktor:ktor-client-serialization:$ktorVersion")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
-    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+    implementation(platform(libs.kotlinBom))
+    implementation(libs.kotlinStdlibJdk8)
+    implementation(libs.cyclonedxCoreJava)
+    implementation(libs.ktorClientCio)
+    implementation(libs.ktorClientCore)
+    implementation(libs.ktorClientJson)
+    implementation(libs.ktorClientSerialization)
+    implementation(libs.ktorClientContentNegotiation)
+    implementation(libs.ktorSerializationKotlinxJson)
+    implementation(libs.kotlinReflect)
 
-    testImplementation(platform("org.junit:junit-bom:5.9.3"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation(gradleTestKit())
-    testImplementation("io.ktor:ktor-client-cio:$ktorVersion")
-    testImplementation("io.ktor:ktor-client-core:$ktorVersion")
-    testImplementation("io.ktor:ktor-client-json:$ktorVersion")
-    testImplementation("io.ktor:ktor-client-serialization:$ktorVersion")
-    testImplementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
-    testImplementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+    testImplementation(platform(libs.junitBom))
+    testImplementation(libs.junitJupiter)
+    testImplementation(libs.ktorClientCio)
+    testImplementation(libs.ktorClientCore)
+    testImplementation(libs.ktorClientJson)
+    testImplementation(libs.ktorClientSerialization)
+    testImplementation(libs.ktorClientContentNegotiation)
+    testImplementation(libs.ktorSerializationKotlinxJson)
 }
 
 gradlePlugin {
