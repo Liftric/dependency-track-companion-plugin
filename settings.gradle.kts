@@ -12,6 +12,7 @@ pluginManagement {
                 plugin("dockerCompose", "com.avast.gradle.docker-compose").version("0.16.12")
                 plugin("kotlinJvm", "org.jetbrains.kotlin.jvm").versionRef("kotlin")
                 plugin("kotlinSerialization", "org.jetbrains.kotlin.plugin.serialization").versionRef("kotlin")
+                plugin("gradlePluginPublish", "com.gradle.plugin-publish").version("1.2.0")
 
                 library("kotlinStdlibJdk8", "org.jetbrains.kotlin", "kotlin-stdlib-jdk8").versionRef("kotlin")
                 library("cyclonedxCoreJava", "org.cyclonedx", "cyclonedx-core-java").versionRef("cyclonedx-core-java")

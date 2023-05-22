@@ -1,13 +1,11 @@
 @Suppress("DSL_SCOPE_VIOLATION") // IntelliJ incorrectly marks libs as not callable
 plugins {
-    `java-gradle-plugin`
     `maven-publish`
     alias(libs.plugins.kotlinJvm)
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.dockerCompose)
+    alias(libs.plugins.gradlePluginPublish)
 }
-
-val dtApiKey: String by project
 
 repositories {
     mavenCentral()
@@ -44,9 +42,6 @@ tasks {
         useJUnitPlatform()
     }
     dockerCompose.isRequiredBy(integrationTestTask)
-    check {
-        dependsOn(integrationTestTask)
-    }
 }
 
 gradlePlugin {
@@ -61,6 +56,13 @@ gradlePlugin {
         }
     }
 }
+pluginBundle {
+    website = "https://github.com/Liftric/dependency-track-companion-plugin"
+    vcsUrl = "https://github.com/Liftric/dependency-track-companion-plugin"
+    description = "Common tasks for Dependency Track interaction, like SBOM upload or VEX Generation"
+    tags = listOf("dependency", "track", "sbom", "vex", "upload", "generate")
+}
+
 
 dependencies {
     implementation(platform(libs.kotlinBom))
@@ -83,4 +85,3 @@ dependencies {
     "integrationTestImplementation"(libs.ktorClientContentNegotiation)
     "integrationTestImplementation"(libs.ktorSerializationKotlinxJson)
 }
-
