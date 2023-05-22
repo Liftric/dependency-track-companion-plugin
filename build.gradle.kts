@@ -54,7 +54,7 @@ gradlePlugin {
     plugins {
         create("dependency-track-companion-plugin") {
             id = "${project.property("pluginGroup")}.${project.property("pluginName")}"
-            implementationClass = "${project.property("pluginGroup")}.DepTrackHelperPlugin"
+            implementationClass = "${project.property("pluginGroup")}.dtcp.DepTrackCompanionPlugin"
             displayName = project.property("pluginName").toString()
             version = project.property("pluginVersion").toString()
             group = project.property("pluginGroup").toString()
