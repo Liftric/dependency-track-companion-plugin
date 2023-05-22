@@ -1,15 +1,16 @@
 package com.liftric.extensions
 
 import org.gradle.api.Project
+import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 
 abstract class DepTrackHelperExtension(val project: Project) {
     abstract val url: Property<String>
-    abstract val filePath: Property<String>
-    abstract val outputPath: Property<String>
-    abstract val outputFilename: Property<String>
     abstract val apiKey: Property<String>
+
+    abstract val inputFile: RegularFileProperty
+    abstract val outputFile: RegularFileProperty
 
     abstract val uploadSBOMData: Property<UploadSBOMBuilder>
 
