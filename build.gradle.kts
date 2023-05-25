@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 @Suppress("DSL_SCOPE_VIOLATION") // IntelliJ incorrectly marks libs as not callable
 plugins {
     `maven-publish`
