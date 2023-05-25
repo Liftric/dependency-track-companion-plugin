@@ -58,16 +58,11 @@ class UploadSBOMBuilder(@get:Internal val proj: Project) {
     )
 }
 
-fun UploadSBOM.toNonNullPairList(): List<Pair<String, String>> {
-    val list = mutableListOf<Pair<String, String>>()
-
-    list.add(Pair("autoCreate", autoCreate.toString()))
-    if (project != null) list.add(Pair("project", project))
-    if (projectName != null) list.add(Pair("projectName", projectName))
-    if (projectVersion != null) list.add(Pair("projectVersion", projectVersion))
-    if (parentName != null) list.add(Pair("parentName", parentName))
-    if (parentVersion != null) list.add(Pair("parentVersion", parentVersion))
-    if (parentUUID != null) list.add(Pair("parentUUID", parentUUID))
-
-    return list
-}
+fun UploadSBOM.toNonNullPairList(): List<Pair<String, String>> = listOf(
+    Pair("project", project),
+    Pair("projectName", projectName),
+    Pair("projectVersion", projectVersion),
+    Pair("parentName", parentName),
+    Pair("parentVersion", parentVersion),
+    Pair("parentUUID", parentUUID),
+).filterNot { it.second == null } as List<Pair<String, String>>

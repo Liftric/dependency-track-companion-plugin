@@ -34,12 +34,8 @@ class UploadVexBuilder(@get:Internal val proj: Project) {
     )
 }
 
-fun UploadVex.toNonNullPairList(): List<Pair<String, String>> {
-    val list = mutableListOf<Pair<String, String>>()
-
-    if (project != null) list.add(Pair("project", project))
-    if (projectName != null) list.add(Pair("projectName", projectName))
-    if (projectVersion != null) list.add(Pair("projectVersion", projectVersion))
-
-    return list
-}
+fun UploadVex.toNonNullPairList(): List<Pair<String, String>> = listOf(
+    Pair("project", project),
+    Pair("projectName", projectName),
+    Pair("projectVersion", projectVersion),
+).filterNot { it.second == null } as List<Pair<String, String>>
