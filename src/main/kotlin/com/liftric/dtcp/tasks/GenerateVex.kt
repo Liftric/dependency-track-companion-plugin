@@ -114,9 +114,7 @@ abstract class GenerateVexTask : DefaultTask() {
         vexFile.vulnerabilities = (vexFile.vulnerabilities ?: emptyList()) + vulnerability
     }
 
-    private fun parseInputFile(file: File): Bom {
-        return JsonParser().parse(file)
-    }
+    private fun parseInputFile(file: File): Bom = JsonParser().parse(file)
 
     private fun writeVexFile(outputFile: File) {
         val json = BomJsonGenerator14(vexFile).toJsonString()

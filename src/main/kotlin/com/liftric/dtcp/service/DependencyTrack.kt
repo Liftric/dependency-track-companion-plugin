@@ -15,17 +15,17 @@ class DependencyTrack(apiKey: String, baseUrl: String) {
 
     fun getProject(projectName: String, projectVersion: String): Project = runBlocking {
         val url = "$baseUrl/api/v1/project/lookup?name=$projectName&version=$projectVersion"
-        return@runBlocking client.getRequest(url).body()
+        client.getRequest(url).body()
     }
 
     fun getProjectComponentsById(id: String): List<Component> = runBlocking {
         val url = "$baseUrl/api/v1/component/project/$id"
-        return@runBlocking client.getRequest(url).body()
+        client.getRequest(url).body()
     }
 
     fun getProjectFindingsById(id: String): List<Finding> = runBlocking {
         val url = "$baseUrl/api/v1/finding/project/$id?suppressed=true"
-        return@runBlocking client.getRequest(url).body()
+        client.getRequest(url).body()
     }
 
     fun uploadVex(file: File, formData: List<Pair<String, String>>) = runBlocking {
@@ -40,7 +40,7 @@ class DependencyTrack(apiKey: String, baseUrl: String) {
         val formData = uploadSBOM.toNonNullPairList()
         val url = "$baseUrl/api/v1/bom"
         val res = client.uploadFileWithFormData(url, file, "bom", formData)
-        return@runBlocking res.body()
+        res.body()
     }
 
     fun waitForSbomAnalysis(token: String) = runBlocking {

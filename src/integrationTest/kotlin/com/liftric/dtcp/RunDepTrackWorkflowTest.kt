@@ -3,7 +3,7 @@ package com.liftric.dtcp
 import com.liftric.dtcp.model.VexComponent
 import com.liftric.dtcp.model.VexVulnerability
 import com.liftric.dtcp.service.ApiService
-import com.liftric.dtcp.service.ApiServiceIgnoreError
+import com.liftric.dtcp.service.IgnoreErrorApiService
 import org.gradle.testkit.runner.GradleRunner
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -36,7 +36,7 @@ class RunDepTrackWorkflowTest {
         assertTrue(dependencyTrackAccessKey.isNotEmpty())
 
         runBlocking {
-            ApiServiceIgnoreError(
+            IgnoreErrorApiService(
                 dependencyTrackApiEndpoint,
                 dependencyTrackAccessKey
             ).createProject(projectName)
