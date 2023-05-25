@@ -16,7 +16,7 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.tasks.*
-import java.util.Date
+import java.util.*
 
 
 abstract class GenerateVexTask : DefaultTask() {
@@ -76,15 +76,26 @@ abstract class GenerateVexTask : DefaultTask() {
     }
 
     private fun handleMetadata(sbom: Bom) {
+        val props = readPluginProperties()
         vexFile.metadata = Metadata()
         vexFile.metadata.timestamp = Date()
         vexFile.metadata.component = sbom.metadata.component ?: Component()
         val pluginData = Tool().apply {
-            vendor = "TODO"
-            name = "TODO"
-            version = "TODO"
+            vendor = props.getProperty("vendor", "Liftric")
+            name = props.getProperty("name", "Liftric")
+            version = props.getProperty("version", "Liftric")
         }
         vexFile.metadata.tools = listOf(pluginData)
+    }
+
+    private fun readPluginProperties(): Properties {
+        val props = Properties()
+        try {
+            props.load(this::class.java.classLoader?.getResourceAsStream("plugin.properties"))
+        } catch (e: Exception) {
+            println("Could not read plugin.properties $e")
+        }
+        return props
     }
 
     private fun handleComponents(sbom: Bom, vexComponentList: List<VexComponent>) {

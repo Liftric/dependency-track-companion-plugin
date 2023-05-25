@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 @Suppress("DSL_SCOPE_VIOLATION") // IntelliJ incorrectly marks libs as not callable
 plugins {
     `maven-publish`
@@ -42,7 +44,19 @@ tasks {
         useJUnitPlatform()
     }
     dockerCompose.isRequiredBy(integrationTestTask)
+
+    val propertiesTask = register<WriteProperties>("writePluginProperties") {
+        outputFile = file("src/main/resources/plugin.properties")
+        property("vendor", project.property("pluginVendor").toString())
+        property("name", project.property("pluginName").toString())
+        property("version", project.property("pluginVersion").toString())
+    }
 }
+
+tasks.named("build") {
+    dependsOn("writePluginProperties")
+}
+
 
 gradlePlugin {
     testSourceSets(integrationTest)
