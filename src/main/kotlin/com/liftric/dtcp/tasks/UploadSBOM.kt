@@ -28,11 +28,10 @@ abstract class UploadSBOMTask : DefaultTask() {
         val inputFileValue = inputFile.get().asFile
         val apiKeyValue = apiKey.get()
         val urlValue = url.get()
-        val uploadSBOMValue = uploadSBOM.get().build()
 
         if (inputFileValue.exists()) {
             val dt = DependencyTrack(apiKeyValue, urlValue)
-            val response = dt.uploadSbom(inputFileValue, uploadSBOMValue)
+            val response = dt.uploadSbom(inputFileValue, uploadSBOM.get())
             dt.waitForSbomAnalysis(response.token)
         } else {
             throw Exception("CycloneDX report file not found, run './gradlew cyclonedxBom'")

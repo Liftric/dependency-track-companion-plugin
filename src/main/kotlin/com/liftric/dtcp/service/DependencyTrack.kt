@@ -1,7 +1,7 @@
 package com.liftric.dtcp.service
 
-import com.liftric.dtcp.extensions.UploadSBOM
-import com.liftric.dtcp.extensions.toNonNullPairList
+import com.liftric.dtcp.extensions.UploadSBOMBuilder
+import com.liftric.dtcp.extensions.UploadVexBuilder
 import com.liftric.dtcp.model.*
 import io.ktor.client.call.*
 import kotlinx.coroutines.delay
@@ -28,18 +28,46 @@ class DependencyTrack(apiKey: String, baseUrl: String) {
         client.getRequest(url).body()
     }
 
-    fun uploadVex(file: File, formData: List<Pair<String, String>>) = runBlocking {
+    fun uploadVex(file: File, uploadVex: UploadVexBuilder) = runBlocking {
         val url = "$baseUrl/api/v1/vex"
-        client.uploadFileWithFormData(url, file, "vex", formData)
+        client.uploadFileWithFormData(url, file, "vex"){
+            uploadVex.project.orNull?.let {
+                append("project", it)
+            }
+            uploadVex.projectName.orNull?.let {
+                append("projectName", it)
+            }
+            uploadVex.projectVersion.orNull?.let {
+                append("projectVersion", it)
+            }
+        }
     }
 
     fun uploadSbom(
         file: File,
-        uploadSBOM: UploadSBOM,
+        uploadSBOM: UploadSBOMBuilder,
     ): UploadSBOMResponse = runBlocking {
-        val formData = uploadSBOM.toNonNullPairList()
         val url = "$baseUrl/api/v1/bom"
-        val res = client.uploadFileWithFormData(url, file, "bom", formData)
+        val res = client.uploadFileWithFormData(url, file, "bom") {
+            uploadSBOM.project.orNull?.let {
+                append("project", it)
+            }
+            uploadSBOM.projectName.orNull?.let {
+                append("projectName", it)
+            }
+            uploadSBOM.projectVersion.orNull?.let {
+                append("projectVersion", it)
+            }
+            uploadSBOM.parentName.orNull?.let {
+                append("parentName", it)
+            }
+            uploadSBOM.parentVersion.orNull?.let {
+                append("parentVersion", it)
+            }
+            uploadSBOM.parentUUID.orNull?.let {
+                append("parentUUID", it)
+            }
+        }
         res.body()
     }
 

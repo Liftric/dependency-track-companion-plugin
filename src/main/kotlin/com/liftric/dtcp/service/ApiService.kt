@@ -32,14 +32,12 @@ class ApiService(apiKey: String) {
         url: String,
         file: File,
         documentType: String,
-        formData: List<Pair<String, String>>,
+        formData: FormBuilder.() -> Unit,
     ): HttpResponse {
         return client.submitFormWithBinaryData(
             url = url,
             formData = formData {
-                formData.forEach { (key, value) ->
-                    append(key, value)
-                }
+                formData()
                 append(documentType, file.readBytes(), Headers.build {
                     append(HttpHeaders.ContentType, "application/${file.extension}")
                     append(HttpHeaders.ContentDisposition, "filename=\"${file.name}\"")

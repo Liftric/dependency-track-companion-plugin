@@ -33,9 +33,3 @@ class UploadVexBuilder(@get:Internal val proj: Project) {
         projectVersion = this.projectVersion.orNull,
     )
 }
-
-fun UploadVex.toNonNullPairList(): List<Pair<String, String>> = listOf(
-    Pair("project", project),
-    Pair("projectName", projectName),
-    Pair("projectVersion", projectVersion),
-).filterNot { it.second == null } as List<Pair<String, String>>
