@@ -1,0 +1,41 @@
+version: '3.7'
+
+#####################################################
+# This Docker Compose file contains two services
+#    Dependency-Track API Server
+#    Dependency-Track FrontEnd
+#####################################################
+
+volumes:
+  dependency-track:
+
+services:
+  dtrack-apiserver:
+    image: dependencytrack/apiserver
+
+    environment:
+      - ALPINE_ENFORCE_AUTHENTICATION=false
+      - ALPINE_ENFORCE_AUTHORIZATION=true
+    deploy:
+      resources:
+        limits:
+          memory: 12288m
+        reservations:
+          memory: 8192m
+      restart_policy:
+        condition: on-failure
+    ports:
+      - '8081:8080'
+    volumes:
+      - 'dependency-track:/data'
+    restart: unless-stopped
+
+  dtrack-frontend:
+    image: dependencytrack/frontend
+    depends_on:
+      - dtrack-apiserver
+    environment:
+      - API_BASE_URL=http://localhost:8081
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
