@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.dockerCompose)
     alias(libs.plugins.gradlePluginPublish)
+    alias(libs.plugins.versioning)
 }
 
 repositories {
@@ -20,6 +21,10 @@ dockerCompose {
     stopContainers.set(true)
     removeContainers.set(true)
     buildBeforeUp.set(true)
+}
+
+version = with(versioning.info) {
+    if (branch == "HEAD" && dirty.not()) tag else tag
 }
 
 val integrationTest = sourceSets.create("integrationTest")
@@ -47,7 +52,7 @@ tasks {
         outputFile = file("src/main/resources/plugin.properties")
         property("vendor", project.property("pluginVendor").toString())
         property("name", project.property("pluginName").toString())
-        property("version", project.property("pluginVersion").toString())
+        property("version", version)
     }
 }
 
@@ -63,7 +68,7 @@ gradlePlugin {
             id = "${project.property("pluginGroup")}.${project.property("pluginName")}"
             implementationClass = "${project.property("pluginGroup")}.dtcp.DepTrackCompanionPlugin"
             displayName = project.property("pluginName").toString()
-            version = project.property("pluginVersion").toString()
+            version = version
             group = project.property("pluginGroup").toString()
         }
     }
