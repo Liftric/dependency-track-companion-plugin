@@ -30,7 +30,7 @@ class DependencyTrack(apiKey: String, baseUrl: String) {
 
     fun uploadVex(file: File, uploadVex: UploadVexBuilder) = runBlocking {
         val url = "$baseUrl/api/v1/vex"
-        client.uploadFileWithFormData(url, file, "vex"){
+        client.uploadFileWithFormData(url, file, "vex") {
             uploadVex.project.orNull?.let {
                 append("project", it)
             }
@@ -49,6 +49,9 @@ class DependencyTrack(apiKey: String, baseUrl: String) {
     ): UploadSBOMResponse = runBlocking {
         val url = "$baseUrl/api/v1/bom"
         val res = client.uploadFileWithFormData(url, file, "bom") {
+            uploadSBOM.autoCreate.orNull?.let {
+                append("autoCreate", it)
+            }
             uploadSBOM.project.orNull?.let {
                 append("project", it)
             }
