@@ -24,7 +24,7 @@ dockerCompose {
 }
 
 version = with(versioning.info) {
-    if (branch == "HEAD" && dirty.not()) tag else tag
+    if (branch == "HEAD" && dirty.not()) tag else full
 }
 
 val integrationTest = sourceSets.create("integrationTest")
