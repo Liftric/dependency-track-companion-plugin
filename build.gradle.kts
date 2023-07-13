@@ -23,6 +23,7 @@ dockerCompose {
     buildBeforeUp.set(true)
 }
 
+group = "com.liftric"
 version = with(versioning.info) {
     if (branch == "HEAD" && dirty.not()) tag else full
 }
@@ -50,13 +51,13 @@ tasks {
 
     val propertiesTask = register<WriteProperties>("writePluginProperties") {
         outputFile = file("src/main/resources/plugin.properties")
-        property("vendor", project.property("pluginVendor").toString())
-        property("name", project.property("pluginName").toString())
-        property("version", version)
+        property("vendor", "Liftric")
+        property("name", rootProject.name)
+        property("version", rootProject.version)
     }
 }
 
-tasks.named("build") {
+tasks.named("publishPlugins") {
     dependsOn("writePluginProperties")
 }
 
@@ -65,11 +66,10 @@ gradlePlugin {
     testSourceSets(integrationTest)
     plugins {
         create("dependency-track-companion-plugin") {
-            id = "${project.property("pluginGroup")}.${project.property("pluginName")}"
-            implementationClass = "${project.property("pluginGroup")}.dtcp.DepTrackCompanionPlugin"
-            displayName = project.property("pluginName").toString()
-            version = version
-            group = project.property("pluginGroup").toString()
+            id = "$group.$name"
+            implementationClass = "${rootProject.group}.dtcp.DepTrackCompanionPlugin"
+            displayName = rootProject.name
+            description = "Common tasks for Dependency Track interaction, like SBOM upload or VEX Generation"
         }
     }
 }
