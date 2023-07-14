@@ -82,8 +82,8 @@ abstract class GenerateVexTask : DefaultTask() {
         vexFile.metadata.component = sbom.metadata.component ?: Component()
         val pluginData = Tool().apply {
             vendor = props.getProperty("vendor", "Liftric")
-            name = props.getProperty("name", "Liftric")
-            version = props.getProperty("version", "Liftric")
+            name = props.getProperty("name", "dependency-track-companion-plugin")
+            version = props.getProperty("version", "development")
         }
         vexFile.metadata.tools = listOf(pluginData)
     }
