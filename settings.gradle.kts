@@ -9,6 +9,7 @@ pluginManagement {
                 version("cyclonedx-core-java", "7.3.2")
                 version("junit-bom", "5.9.3")
 
+                plugin("versioning", "net.nemerosa.versioning").version("3.0.0")
                 plugin("dockerCompose", "com.avast.gradle.docker-compose").version("0.16.12")
                 plugin("kotlinJvm", "org.jetbrains.kotlin.jvm").versionRef("kotlin")
                 plugin("kotlinSerialization", "org.jetbrains.kotlin.plugin.serialization").versionRef("kotlin")

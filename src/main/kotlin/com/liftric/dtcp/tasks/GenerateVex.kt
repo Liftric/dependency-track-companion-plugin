@@ -81,9 +81,9 @@ abstract class GenerateVexTask : DefaultTask() {
         vexFile.metadata.timestamp = Date()
         vexFile.metadata.component = sbom.metadata.component ?: Component()
         val pluginData = Tool().apply {
-            vendor = props.getProperty("vendor", "Liftric")
-            name = props.getProperty("name", "Liftric")
-            version = props.getProperty("version", "Liftric")
+            vendor = props.getProperty("vendor")
+            name = props.getProperty("name")
+            version = props.getProperty("version")
         }
         vexFile.metadata.tools = listOf(pluginData)
     }

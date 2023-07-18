@@ -5,6 +5,12 @@ plugins {
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.dockerCompose)
     alias(libs.plugins.gradlePluginPublish)
+    alias(libs.plugins.versioning)
+}
+
+group = "com.liftric"
+version = with(versioning.info) {
+    if (branch == "HEAD" && dirty.not()) tag else full
 }
 
 repositories {
@@ -23,6 +29,7 @@ dockerCompose {
 }
 
 val integrationTest = sourceSets.create("integrationTest")
+
 tasks {
     val test by existing
     withType<Test> {
@@ -43,28 +50,32 @@ tasks {
     }
     dockerCompose.isRequiredBy(integrationTestTask)
 
+    val pluginPropertiesBuildFolder = file("$buildDir/compileProperties/")
     val propertiesTask = register<WriteProperties>("writePluginProperties") {
-        outputFile = file("src/main/resources/plugin.properties")
-        property("vendor", project.property("pluginVendor").toString())
-        property("name", project.property("pluginName").toString())
-        property("version", project.property("pluginVersion").toString())
+        outputFile = pluginPropertiesBuildFolder.resolve("plugin.properties")
+        property("vendor", "Liftric")
+        property("name", rootProject.name)
+        property("version", rootProject.version)
+    }
+    sourceSets.getByName(SourceSet.MAIN_SOURCE_SET_NAME).resources.srcDir(pluginPropertiesBuildFolder)
+
+    withType(ProcessResources::class.java) {
+        dependsOn(propertiesTask)
     }
 }
 
-tasks.named("build") {
+tasks.named("publishPlugins") {
     dependsOn("writePluginProperties")
 }
-
 
 gradlePlugin {
     testSourceSets(integrationTest)
     plugins {
         create("dependency-track-companion-plugin") {
-            id = "${project.property("pluginGroup")}.${project.property("pluginName")}"
-            implementationClass = "${project.property("pluginGroup")}.dtcp.DepTrackCompanionPlugin"
-            displayName = project.property("pluginName").toString()
-            version = project.property("pluginVersion").toString()
-            group = project.property("pluginGroup").toString()
+            id = "$group.$name"
+            implementationClass = "$group.dtcp.DepTrackCompanionPlugin"
+            displayName = name
+            description = "Common tasks for Dependency Track interaction, like SBOM upload or VEX Generation"
         }
     }
 }
