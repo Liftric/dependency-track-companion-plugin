@@ -25,7 +25,7 @@ data class Project(
     val active: Boolean,
     val classifier: String,
     val directDependencies: String,
-    val lastInheritedRiskScore: Double,
+    val lastInheritedRiskScore: Double? = null,
 )
 
 @Serializable

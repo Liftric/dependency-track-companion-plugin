@@ -49,11 +49,20 @@ class DepTrackCompanionPlugin : Plugin<Project> {
             task.mustRunAfter(generateVex)
         }
 
+        val riskScore = project.tasks.register("riskScore", RiskScoreTask::class.java) { task ->
+            task.group = taskGroup
+            task.description = "Get Risk Score"
+            task.apiKey.set(extension.apiKey)
+            task.url.set(extension.url)
+            task.riskScore.set(extension.riskScoreData)
+            task.mustRunAfter(uploadVex)
+        }
+
         project.tasks.register("runDepTrackWorkflow") { task ->
             task.group = taskGroup
             task.description =
                 "Runs uploadSbom, generateVex and uploadVex for CI/CD"
-            task.dependsOn(uploadSbom, generateVex, uploadVex)
+            task.dependsOn(uploadSbom, generateVex, uploadVex, riskScore)
         }
 
         project.tasks.register("getOutdatedDependencies", GetOutdatedDependenciesTask::class.java) { task ->

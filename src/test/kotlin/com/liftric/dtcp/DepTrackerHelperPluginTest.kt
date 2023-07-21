@@ -28,6 +28,7 @@ class DepTrackCompanionPluginTest {
         assertNotNull(project.tasks.findByName("generateVex"))
         assertNotNull(project.tasks.findByName("uploadSbom"))
         assertNotNull(project.tasks.findByName("uploadVex"))
+        assertNotNull(project.tasks.findByName("riskScore"))
         assertNotNull(project.tasks.findByName("getOutdatedDependencies"))
         assertNotNull(project.tasks.findByName("getSuppressedVuln"))
     }

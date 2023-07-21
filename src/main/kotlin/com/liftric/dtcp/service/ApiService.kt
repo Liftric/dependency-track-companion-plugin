@@ -53,4 +53,12 @@ class ApiService(apiKey: String) {
             }
         }
     }
+
+    suspend fun postRequest(url: String): HttpResponse {
+        return client.post(url) {
+            headers {
+                append(HttpHeaders.ContentType, ContentType.Application.Json)
+            }
+        }
+    }
 }
