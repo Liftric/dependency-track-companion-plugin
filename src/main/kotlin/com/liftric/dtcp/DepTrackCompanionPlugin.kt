@@ -10,6 +10,7 @@ internal const val taskGroup = "Dependency Track Companion Plugin"
 
 class DepTrackCompanionPlugin : Plugin<Project> {
     override fun apply(project: Project) {
+        project.pluginManager.apply("org.cyclonedx.bom")
         val extension =
             project.extensions.create(extensionName, DepTrackCompanionExtension::class.java, project)
 
@@ -20,6 +21,12 @@ class DepTrackCompanionPlugin : Plugin<Project> {
             project.layout.buildDirectory.file("reports/vex.json")
         )
 
+        val generateSbom = project.tasks.register("generateSbom") { task ->
+            task.group = taskGroup
+            task.description = "Generate SBOM file"
+            task.dependsOn("cyclonedxBom")
+        }
+
         val uploadSbom = project.tasks.register("uploadSbom", UploadSBOMTask::class.java) { task ->
             task.group = taskGroup
             task.description = "Uploads SBOM file"
@@ -27,6 +34,7 @@ class DepTrackCompanionPlugin : Plugin<Project> {
             task.apiKey.set(extension.apiKey)
             task.inputFile.set(extension.inputFile)
             task.uploadSBOM.set(extension.uploadSBOMData)
+            task.dependsOn(generateSbom)
         }
 
         val generateVex = project.tasks.register("generateVex", GenerateVexTask::class.java) { task ->
@@ -37,6 +45,7 @@ class DepTrackCompanionPlugin : Plugin<Project> {
             task.vexComponent.set(extension.vexComponentList)
             task.vexVulnerability.set(extension.vexVulnerabilityList)
             task.mustRunAfter(uploadSbom)
+            task.dependsOn(generateSbom)
         }
 
         val uploadVex = project.tasks.register("uploadVex", UploadVexTask::class.java) { task ->
@@ -47,6 +56,7 @@ class DepTrackCompanionPlugin : Plugin<Project> {
             task.url.set(extension.url)
             task.uploadVex.set(extension.uploadVexData)
             task.mustRunAfter(generateVex)
+            task.dependsOn(generateVex)
         }
 
         val riskScore = project.tasks.register("riskScore", RiskScoreTask::class.java) { task ->
@@ -62,7 +72,7 @@ class DepTrackCompanionPlugin : Plugin<Project> {
             task.group = taskGroup
             task.description =
                 "Runs uploadSbom, generateVex and uploadVex for CI/CD"
-            task.dependsOn(uploadSbom, generateVex, uploadVex, riskScore)
+            task.dependsOn(generateSbom, uploadSbom, generateVex, uploadVex, riskScore)
         }
 
         project.tasks.register("getOutdatedDependencies", GetOutdatedDependenciesTask::class.java) { task ->

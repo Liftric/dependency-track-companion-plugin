@@ -7,6 +7,7 @@ pluginManagement {
                 version("kotlin", "1.8.21")
                 version("ktor", "2.3.0")
                 version("cyclonedx-core-java", "7.3.2")
+                version("cyclonedx-gradle-plugin", "1.7.4")
                 version("junit-bom", "5.9.3")
 
                 plugin("versioning", "net.nemerosa.versioning").version("3.0.0")
@@ -17,6 +18,7 @@ pluginManagement {
 
                 library("kotlinStdlibJdk8", "org.jetbrains.kotlin", "kotlin-stdlib-jdk8").versionRef("kotlin")
                 library("cyclonedxCoreJava", "org.cyclonedx", "cyclonedx-core-java").versionRef("cyclonedx-core-java")
+                library("cyclonedxGradlePlugin", "org.cyclonedx", "cyclonedx-gradle-plugin").versionRef("cyclonedx-gradle-plugin")
                 library("kotlinBom", "org.jetbrains.kotlin", "kotlin-bom").versionRef("kotlin")
                 library("ktorClientCio", "io.ktor", "ktor-client-cio").versionRef("ktor")
                 library("ktorClientCore", "io.ktor", "ktor-client-core").versionRef("ktor")

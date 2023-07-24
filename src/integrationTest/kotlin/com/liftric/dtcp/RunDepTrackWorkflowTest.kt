@@ -22,9 +22,7 @@ import kotlinx.coroutines.runBlocking
  * For more information about why this is necessary, refer to the ApiServiceIgnoreError class comments.
  */
 
-internal const val dependencyTrackApiEndpoint = "http://localhost:8081"
-
-class RunDepTrackWorkflowTest {
+class RunDepTrackWorkflowTest: IntegrationTestBase() {
     @Test
     fun testRunDepTrackWorkflowTest() {
         val projectName = "dtTest"
@@ -42,26 +40,6 @@ class RunDepTrackWorkflowTest {
             ).createProject(projectName)
         }
 
-        val vexComponent = VexComponent(
-            purl = "pkg:maven/org.eclipse.jetty/jetty-http@9.4.49.v20220914?type=jar",
-            vulnerability = VexVulnerability(
-                id = "CVE-2023-26048",
-                source = "NVD",
-                analysis = "Vulnerability.Analysis.State.FALSE_POSITIVE",
-                analysisValue = "FALSE_POSITIVE",
-                detail = null,
-            )
-        )
-
-        val vexVulnerability = VexVulnerability(
-            id = "CVE-2020-8908",
-            source = "NVD",
-            analysis = "Vulnerability.Analysis.State.RESOLVED",
-            analysisValue = "RESOLVED",
-            detail = "This is resolved",
-        )
-
-
         val projectDir = File("build/runDepTrackWorkflowTest")
 
         projectDir.mkdirs()
@@ -72,7 +50,12 @@ import com.liftric.dtcp.extensions.*
 import org.cyclonedx.model.vulnerability.Vulnerability
 
 plugins {
+    kotlin("jvm") version "1.8.21"
     id("com.liftric.dependency-track-companion-plugin")
+}
+
+repositories {
+    mavenCentral()
 }
 
 group = "com.liftric.$projectName"
@@ -114,11 +97,6 @@ dependencyTrackCompanion {
 }
         """
         )
-
-        val sourceJsonFile = Paths.get("test/data/bom.json")
-        val targetJsonFile = projectDir.toPath().resolve("build/reports/bom.json")
-        Files.createDirectories(targetJsonFile.parent)
-        Files.copy(sourceJsonFile, targetJsonFile, StandardCopyOption.REPLACE_EXISTING)
 
         val result = GradleRunner
             .create()

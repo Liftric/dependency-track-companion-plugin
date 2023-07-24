@@ -98,6 +98,7 @@ dependencies {
     implementation(libs.ktorClientContentNegotiation)
     implementation(libs.ktorSerializationKotlinxJson)
     implementation(libs.kotlinReflect)
+    implementation(libs.cyclonedxGradlePlugin)
 
     testImplementation(libs.junitJupiter)
 
