@@ -97,7 +97,7 @@ dependencyTrackCompanion {
     riskScore{
         projectName.set(name)
         projectVersion.set(version)
-        timeout.set(20)
+        timeout.set(20.seconds)
         maxRiskScore.set(7.0)
     }
     vexComponent {
