@@ -1,17 +1,19 @@
 # Gradle Dependency Track Companion w Plugin
 
 This Gradle plugin is designed to ease the process of working with [Dependency Track](https://dependencytrack.org/), a Continuous SBOM Analysis Platform. With this plugin, you can automate the upload process of SBOM files, generate Vex files for component or vulnerability suppression, and more.
+This plugin internally applies the [CycloneDX Gradle plugin](https://github.com/CycloneDX/cyclonedx-gradle-plugin), so you don't need to manually include it in your project.
 
 ## Features
 
 The plugin offers several tasks:
 
+- `runDepTrackWorkflow`: Runs `generateSbom`, `uploadSbom`, `generateVex` and `uploadVex` tasks for CI/CD.
+- `generateSbom`: Generates the SBOM (Runs "cyclonedxBom" from [cyclonedx-gradle-plugin](https://github.com/CycloneDX/cyclonedx-gradle-plugin) under the hood)
+- `uploadSbom`: Uploads SBOM file.
 - `generateVex`: Generates VEX file.
+- `uploadVex`: Uploads VEX file.
 - `getOutdatedDependencies`: Gets outdated dependencies.
 - `getSuppressedVuln`: Gets suppressed vulnerabilities.
-- `runDepTrackWorkflow`: Runs `uploadSbom`, `generateVex` and `uploadVex` tasks for CI/CD.
-- `uploadSbom`: Uploads SBOM file.
-- `uploadVex`: Uploads VEX file.
 
 ### Task Configuration
 
