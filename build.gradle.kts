@@ -79,13 +79,13 @@ gradlePlugin {
         }
     }
 }
+
 pluginBundle {
     website = "https://github.com/Liftric/dependency-track-companion-plugin"
     vcsUrl = "https://github.com/Liftric/dependency-track-companion-plugin"
     description = "Common tasks for Dependency Track interaction, like SBOM upload or VEX Generation"
     tags = listOf("dependency", "track", "sbom", "vex", "upload", "generate")
 }
-
 
 dependencies {
     implementation(platform(libs.kotlinBom))
@@ -98,6 +98,7 @@ dependencies {
     implementation(libs.ktorClientContentNegotiation)
     implementation(libs.ktorSerializationKotlinxJson)
     implementation(libs.kotlinReflect)
+    implementation(libs.cyclonedxGradlePlugin)
 
     testImplementation(libs.junitJupiter)
 

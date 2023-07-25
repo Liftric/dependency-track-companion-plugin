@@ -25,9 +25,11 @@ class DepTrackCompanionPluginTest {
         val project = ProjectBuilder.builder().build()
         project.pluginManager.apply("com.liftric.dependency-track-companion-plugin")
         assertNotNull(project.tasks.findByName("runDepTrackWorkflow"))
-        assertNotNull(project.tasks.findByName("generateVex"))
+        assertNotNull(project.tasks.findByName("generateSbom"))
         assertNotNull(project.tasks.findByName("uploadSbom"))
+        assertNotNull(project.tasks.findByName("generateVex"))
         assertNotNull(project.tasks.findByName("uploadVex"))
+        assertNotNull(project.tasks.findByName("riskScore"))
         assertNotNull(project.tasks.findByName("getOutdatedDependencies"))
         assertNotNull(project.tasks.findByName("getSuppressedVuln"))
     }

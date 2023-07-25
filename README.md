@@ -1,17 +1,19 @@
 # Gradle Dependency Track Companion w Plugin
 
 This Gradle plugin is designed to ease the process of working with [Dependency Track](https://dependencytrack.org/), a Continuous SBOM Analysis Platform. With this plugin, you can automate the upload process of SBOM files, generate Vex files for component or vulnerability suppression, and more.
+This plugin internally applies the [CycloneDX Gradle plugin](https://github.com/CycloneDX/cyclonedx-gradle-plugin), so you don't need to manually include it in your project.
 
 ## Features
 
 The plugin offers several tasks:
 
+- `runDepTrackWorkflow`: Runs `generateSbom`, `uploadSbom`, `generateVex` and `uploadVex` tasks for CI/CD.
+- `generateSbom`: Generates the SBOM (Runs "cyclonedxBom" from [cyclonedx-gradle-plugin](https://github.com/CycloneDX/cyclonedx-gradle-plugin) under the hood)
+- `uploadSbom`: Uploads SBOM file.
 - `generateVex`: Generates VEX file.
+- `uploadVex`: Uploads VEX file.
 - `getOutdatedDependencies`: Gets outdated dependencies.
 - `getSuppressedVuln`: Gets suppressed vulnerabilities.
-- `runDepTrackWorkflow`: Runs `uploadSbom`, `generateVex` and `uploadVex` tasks for CI/CD.
-- `uploadSbom`: Uploads SBOM file.
-- `uploadVex`: Uploads VEX file.
 
 ### Task Configuration
 
@@ -38,10 +40,18 @@ Each task requires certain inputs which are to be specified in your `build.gradl
 - `outputFile`: *Optional* (Default "build/reports/vex.json")
 - `uploadVex`: [Dependency Track VEX Upload API Reference](https://yoursky.blue/documentation-api/dependencytrack.html#tag/vex/operation/uploadVex)
 
+#### riskScore
+
+- `url`: Dependency Track API URL
+- `apiKey`: Dependency Track API KEY
+- `riskScore`: *Optional* - [Dependency Track Project Lookup API Reference](https://yoursky.blue/documentation-api/dependencytrack.html#tag/project/operation/getProjectByNameAndVersion)
+   - `timeout`: *Optional* - If specified, the task will wait for the risk score to be calculated. Default: 0 seconds
+   - `maxRiskScore`: *Optional* - If specified, the task will fail if the risk score is higher than the specified value.
+
 #### runDepTrackWorkflow
 
 - This task requires configuration for `uploadSbom`, `generateVex`, and `uploadVex`.
-- Runs `uploadSbom`, `generateVex` and `uploadVex` tasks for CI/CD.
+- Runs `uploadSbom`, `generateVex`, `uploadVex` and `riskScore` tasks for CI/CD.
 
 #### getOutdatedDependencies
 
@@ -85,6 +95,12 @@ dependencyTrackCompanion {
     getSuppressedVuln {
         projectName.set(name)
         projectVersion.set(version)
+    }
+    riskScore{
+        projectName.set(name)
+        projectVersion.set(version)
+        timeout.set(20.seconds)
+        maxRiskScore.set(7.0)
     }
     vexComponent {
         purl.set("pkg:maven/org.eclipse.jetty/jetty-http@9.4.49.v20220914?type=jar")
