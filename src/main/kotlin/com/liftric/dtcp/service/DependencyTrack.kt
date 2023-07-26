@@ -1,6 +1,5 @@
 package com.liftric.dtcp.service
 
-import com.liftric.dtcp.extensions.UploadVexBuilder
 import com.liftric.dtcp.model.*
 import io.ktor.client.call.*
 import kotlinx.coroutines.delay
@@ -31,16 +30,21 @@ class DependencyTrack(apiKey: String, private val baseUrl: String) {
         client.getRequest(url).body()
     }
 
-    fun uploadVex(file: File, uploadVex: UploadVexBuilder) = runBlocking {
+    fun uploadVex(
+        file: File,
+        projectUUID: String?,
+        projectName: String?,
+        projectVersion: String?,
+    ) = runBlocking {
         val url = "$baseUrl/api/v1/vex"
         client.uploadFileWithFormData(url, file, "vex") {
-            uploadVex.project.orNull?.let {
-                append("project", it)
+            projectUUID?.let {
+                append("projectUUID", it)
             }
-            uploadVex.projectName.orNull?.let {
+            projectName?.let {
                 append("projectName", it)
             }
-            uploadVex.projectVersion.orNull?.let {
+            projectVersion?.let {
                 append("projectVersion", it)
             }
         }

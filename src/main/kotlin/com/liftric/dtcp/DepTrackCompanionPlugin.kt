@@ -61,7 +61,9 @@ class DepTrackCompanionPlugin : Plugin<Project> {
             task.outputFile.set(extension.outputFile)
             task.apiKey.set(extension.apiKey)
             task.url.set(extension.url)
-            task.uploadVex.set(extension.uploadVexData)
+            task.projectUUID.set(extension.projectUUID)
+            task.projectName.set(extension.projectName)
+            task.projectVersion.set(extension.projectVersion)
             task.mustRunAfter(generateVex)
             task.dependsOn(generateVex)
         }
