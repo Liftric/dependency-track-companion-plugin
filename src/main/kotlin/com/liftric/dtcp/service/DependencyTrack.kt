@@ -20,18 +20,18 @@ class DependencyTrack(apiKey: String, private val baseUrl: String) {
         client.getRequest(url).body()
     }
 
-    fun analyzeProjectFindings(projectUuid: String): UploadSBOMResponse = runBlocking {
-        val url = "$baseUrl/api/v1/finding/project/$projectUuid/analyze"
+    fun analyzeProjectFindings(projectUUID: String): UploadSBOMResponse = runBlocking {
+        val url = "$baseUrl/api/v1/finding/project/$projectUUID/analyze"
         client.postRequest(url).body()
     }
 
-    fun getProjectComponentsById(id: String): List<Component> = runBlocking {
-        val url = "$baseUrl/api/v1/component/project/$id"
+    fun getProjectComponentsById(projectUUID: String): List<Component> = runBlocking {
+        val url = "$baseUrl/api/v1/component/project/$projectUUID"
         client.getRequest(url).body()
     }
 
-    fun getProjectFindingsById(id: String): List<Finding> = runBlocking {
-        val url = "$baseUrl/api/v1/finding/project/$id?suppressed=true"
+    fun getProjectFindingsById(projectUUID: String): List<Finding> = runBlocking {
+        val url = "$baseUrl/api/v1/finding/project/$projectUUID?suppressed=true"
         client.getRequest(url).body()
     }
 
