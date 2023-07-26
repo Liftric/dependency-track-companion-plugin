@@ -66,10 +66,6 @@ dependencyTrackCompanion {
     apiKey.set("$dependencyTrackAccessKey")
     projectName.set("$projectName")
     projectVersion.set("$version")
-    getOutdatedDependencies {
-        projectName.set("$projectName")
-        projectVersion.set("$version")
-    }
     getSuppressedVuln {
         projectName.set("$projectName")
         projectVersion.set("$version")
