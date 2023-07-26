@@ -6,6 +6,7 @@ import com.liftric.dtcp.service.DependencyTrack
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import org.gradle.api.DefaultTask
+import org.gradle.api.GradleException
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.Input
@@ -45,7 +46,7 @@ abstract class GetOutdatedDependenciesTask : DefaultTask() {
         } else if (projectNameValue != null && projectVersionValue != null) {
             dt.getProject(projectNameValue, projectVersionValue)
         } else {
-            throw Exception("Either projectUUID or projectName and projectVersion must be set")
+            throw GradleException("Either projectUUID or projectName and projectVersion must be set")
         }
 
         val directDependencies = Json {

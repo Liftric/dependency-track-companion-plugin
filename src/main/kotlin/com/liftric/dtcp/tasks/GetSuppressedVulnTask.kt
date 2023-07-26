@@ -3,6 +3,7 @@ package com.liftric.dtcp.tasks
 import com.liftric.dtcp.model.Finding
 import com.liftric.dtcp.service.DependencyTrack
 import org.gradle.api.DefaultTask
+import org.gradle.api.GradleException
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.Input
@@ -43,7 +44,7 @@ abstract class GetSuppressedVulnTask : DefaultTask() {
             val project = dt.getProject(projectNameValue, projectVersionValue)
             dt.getProjectFindingsById(project.uuid)
         } else {
-            throw Exception("Either projectUUID or projectName and projectVersion must be set")
+            throw GradleException("Either projectUUID or projectName and projectVersion must be set")
         }
 
         printSuppressedVuln(findings)

@@ -73,6 +73,9 @@ class DepTrackCompanionPlugin : Plugin<Project> {
             task.description = "Get Risk Score"
             task.apiKey.set(extension.apiKey)
             task.url.set(extension.url)
+            task.projectUUID.set(extension.projectUUID)
+            task.projectName.set(extension.projectName)
+            task.projectVersion.set(extension.projectVersion)
             task.riskScore.set(extension.riskScoreData)
             task.mustRunAfter(uploadVex)
         }

@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Assertions.assertNotNull
 import org.gradle.testfixtures.ProjectBuilder
 import org.junit.jupiter.api.Test
 
-
 class DepTrackCompanionPluginTest {
     @Test
     fun testApply() {

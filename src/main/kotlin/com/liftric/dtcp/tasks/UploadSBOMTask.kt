@@ -2,6 +2,7 @@ package com.liftric.dtcp.tasks
 
 import com.liftric.dtcp.service.DependencyTrack
 import org.gradle.api.DefaultTask
+import org.gradle.api.GradleException
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.TaskAction
@@ -61,7 +62,7 @@ abstract class UploadSBOMTask : DefaultTask() {
         val parentUUIDValue = parentUUID.orNull
 
         if (projectUUIDValue == null && (projectNameValue == null && projectVersionValue == null)) {
-            throw Exception("Either projectUUID or projectName and projectVersion must be set")
+            throw GradleException("Either projectUUID or projectName and projectVersion must be set")
         }
 
         val dt = DependencyTrack(apiKeyValue, urlValue)
