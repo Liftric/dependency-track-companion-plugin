@@ -66,10 +66,6 @@ dependencyTrackCompanion {
     apiKey.set("$dependencyTrackAccessKey")
     projectName.set("$projectName")
     projectVersion.set("$version")
-    getSuppressedVuln {
-        projectName.set("$projectName")
-        projectVersion.set("$version")
-    }
     vexComponent {
         purl.set("${vexComponent.purl}")
         vulnerability {

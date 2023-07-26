@@ -99,7 +99,9 @@ class DepTrackCompanionPlugin : Plugin<Project> {
             task.description = "Gets suppressed vulnerabilities"
             task.apiKey.set(extension.apiKey)
             task.url.set(extension.url)
-            task.getSuppressedVuln.set(extension.getSuppressedVulnData)
+            task.projectUUID.set(extension.projectUUID)
+            task.projectName.set(extension.projectName)
+            task.projectVersion.set(extension.projectVersion)
         }
     }
 }
