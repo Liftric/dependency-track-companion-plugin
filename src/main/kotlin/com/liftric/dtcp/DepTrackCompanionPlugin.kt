@@ -20,6 +20,7 @@ class DepTrackCompanionPlugin : Plugin<Project> {
         extension.outputFile.convention(
             project.layout.buildDirectory.file("reports/vex.json")
         )
+        extension.autoCreate.convention(false)
 
         val generateSbom = project.tasks.register("generateSbom") { task ->
             task.group = taskGroup
@@ -33,7 +34,13 @@ class DepTrackCompanionPlugin : Plugin<Project> {
             task.url.set(extension.url)
             task.apiKey.set(extension.apiKey)
             task.inputFile.set(extension.inputFile)
-            task.uploadSBOM.set(extension.uploadSBOMData)
+            task.autoCreate.set(extension.autoCreate)
+            task.projectUUID.set(extension.projectUUID)
+            task.projectName.set(extension.projectName)
+            task.projectVersion.set(extension.projectVersion)
+            task.parentUUID.set(extension.parentUUID)
+            task.parentName.set(extension.parentName)
+            task.parentVersion.set(extension.parentVersion)
             task.dependsOn(generateSbom)
         }
 

@@ -64,10 +64,8 @@ version = "$version"
 dependencyTrackCompanion {
     url.set("$dependencyTrackApiEndpoint")
     apiKey.set("$dependencyTrackAccessKey")
-    uploadSBOM {
-        projectName.set("$projectName")
-        projectVersion.set("$version")
-    }
+    projectName.set("$projectName")
+    projectVersion.set("$version")
     uploadVex {
         projectName.set("$projectName")
         projectVersion.set("$version")
