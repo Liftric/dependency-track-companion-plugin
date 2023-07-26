@@ -21,7 +21,6 @@ abstract class DepTrackCompanionExtension(val project: Project) {
     abstract val parentVersion: Property<String>
 
     abstract val riskScoreData: Property<RiskScoreBuilder>
-    abstract val getOutdatedDependenciesData: Property<GetOutdatedDependenciesBuilder>
     abstract val getSuppressedVulnData: Property<GetSuppressedVulnBuilder>
 
     abstract val vexComponentList: ListProperty<VexComponentBuilder>
@@ -38,10 +37,6 @@ fun DepTrackCompanionExtension.vexVulnerability(action: VexVulnerabilityBuilder.
 
 fun DepTrackCompanionExtension.riskScore(action: RiskScoreBuilder.() -> Unit) {
     riskScoreData.set(RiskScoreBuilder(project).apply(action))
-}
-
-fun DepTrackCompanionExtension.getOutdatedDependencies(action: GetOutdatedDependenciesBuilder.() -> Unit) {
-    getOutdatedDependenciesData.set(GetOutdatedDependenciesBuilder(project).apply(action))
 }
 
 fun DepTrackCompanionExtension.getSuppressedVuln(action: GetSuppressedVulnBuilder.() -> Unit) {

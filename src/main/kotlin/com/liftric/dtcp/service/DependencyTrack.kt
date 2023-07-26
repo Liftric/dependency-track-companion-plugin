@@ -15,6 +15,11 @@ class DependencyTrack(apiKey: String, private val baseUrl: String) {
         client.getRequest(url).body()
     }
 
+    fun getProject(projectUUID: String): Project = runBlocking {
+        val url = "$baseUrl/api/v1/project/$projectUUID"
+        client.getRequest(url).body()
+    }
+
     fun analyzeProjectFindings(projectUuid: String): UploadSBOMResponse = runBlocking {
         val url = "$baseUrl/api/v1/finding/project/$projectUuid/analyze"
         client.postRequest(url).body()

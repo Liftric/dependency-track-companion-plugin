@@ -89,7 +89,9 @@ class DepTrackCompanionPlugin : Plugin<Project> {
             task.description = "Gets outdated dependencies"
             task.apiKey.set(extension.apiKey)
             task.url.set(extension.url)
-            task.getOutdatedDependencies.set(extension.getOutdatedDependenciesData)
+            task.projectUUID.set(extension.projectUUID)
+            task.projectName.set(extension.projectName)
+            task.projectVersion.set(extension.projectVersion)
         }
 
         project.tasks.register("getSuppressedVuln", GetSuppressedVulnTask::class.java) { task ->
