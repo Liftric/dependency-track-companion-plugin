@@ -57,12 +57,14 @@ abstract class RiskScoreTask : DefaultTask() {
 
         val dt = DependencyTrack(apiKeyValue, urlValue)
 
-        val uuid = if (projectUUIDValue != null) {
-            projectUUIDValue
-        } else if (projectNameValue != null && projectVersionValue != null) {
-            dt.getProject(projectNameValue, projectVersionValue).uuid
-        } else {
-            throw GradleException("Either projectUUID or projectName and projectVersion must be set")
+        val uuid = when {
+            projectUUIDValue != null -> projectUUIDValue
+            projectNameValue != null && projectVersionValue != null -> dt.getProject(
+                projectNameValue,
+                projectVersionValue
+            ).uuid
+
+            else -> throw GradleException("Either projectUUID or projectName and projectVersion must be set")
         }
 
         dt.analyzeProjectFindings(uuid)

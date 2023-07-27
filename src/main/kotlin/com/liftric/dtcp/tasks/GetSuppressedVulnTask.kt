@@ -38,13 +38,14 @@ abstract class GetSuppressedVulnTask : DefaultTask() {
 
         val dt = DependencyTrack(apiKeyValue, urlValue)
 
-        val findings = if (projectUUIDValue != null) {
-            dt.getProjectFindingsById(projectUUIDValue)
-        } else if (projectNameValue != null && projectVersionValue != null) {
-            val project = dt.getProject(projectNameValue, projectVersionValue)
-            dt.getProjectFindingsById(project.uuid)
-        } else {
-            throw GradleException("Either projectUUID or projectName and projectVersion must be set")
+        val findings = when {
+            projectUUIDValue != null -> dt.getProjectFindingsById(projectUUIDValue)
+            projectNameValue != null && projectVersionValue != null -> {
+                val project = dt.getProject(projectNameValue, projectVersionValue)
+                dt.getProjectFindingsById(project.uuid)
+            }
+
+            else -> throw GradleException("Either projectUUID or projectName and projectVersion must be set")
         }
 
         printSuppressedVuln(findings)

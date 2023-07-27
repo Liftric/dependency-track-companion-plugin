@@ -41,12 +41,14 @@ abstract class GetOutdatedDependenciesTask : DefaultTask() {
 
         val dt = DependencyTrack(apiKeyValue, urlValue)
 
-        val project = if (projectUUIDValue != null) {
-            dt.getProject(projectUUIDValue)
-        } else if (projectNameValue != null && projectVersionValue != null) {
-            dt.getProject(projectNameValue, projectVersionValue)
-        } else {
-            throw GradleException("Either projectUUID or projectName and projectVersion must be set")
+        val project = when {
+            projectUUIDValue != null -> dt.getProject(projectUUIDValue)
+            projectNameValue != null && projectVersionValue != null -> dt.getProject(
+                projectNameValue,
+                projectVersionValue
+            )
+
+            else -> throw GradleException("Either projectUUID or projectName and projectVersion must be set")
         }
 
         val directDependencies = Json {
