@@ -12,12 +12,15 @@ abstract class DepTrackCompanionExtension(val project: Project) {
     abstract val inputFile: RegularFileProperty
     abstract val outputFile: RegularFileProperty
 
-    abstract val uploadSBOMData: Property<UploadSBOMBuilder>
+    abstract val autoCreate: Property<Boolean>
+    abstract val projectUUID: Property<String>
+    abstract val projectName: Property<String>
+    abstract val projectVersion: Property<String>
+    abstract val parentUUID: Property<String>
+    abstract val parentName: Property<String>
+    abstract val parentVersion: Property<String>
 
-    abstract val uploadVexData: Property<UploadVexBuilder>
     abstract val riskScoreData: Property<RiskScoreBuilder>
-    abstract val getOutdatedDependenciesData: Property<GetOutdatedDependenciesBuilder>
-    abstract val getSuppressedVulnData: Property<GetSuppressedVulnBuilder>
 
     abstract val vexComponentList: ListProperty<VexComponentBuilder>
     abstract val vexVulnerabilityList: ListProperty<VexVulnerabilityBuilder>
@@ -31,22 +34,6 @@ fun DepTrackCompanionExtension.vexVulnerability(action: VexVulnerabilityBuilder.
     vexVulnerabilityList.add(VexVulnerabilityBuilder(project).apply(action))
 }
 
-fun DepTrackCompanionExtension.uploadSBOM(action: UploadSBOMBuilder.() -> Unit) {
-    uploadSBOMData.set(UploadSBOMBuilder(project).apply(action))
-}
-
-fun DepTrackCompanionExtension.uploadVex(action: UploadVexBuilder.() -> Unit) {
-    uploadVexData.set(UploadVexBuilder(project).apply(action))
-}
-
 fun DepTrackCompanionExtension.riskScore(action: RiskScoreBuilder.() -> Unit) {
     riskScoreData.set(RiskScoreBuilder(project).apply(action))
-}
-
-fun DepTrackCompanionExtension.getOutdatedDependencies(action: GetOutdatedDependenciesBuilder.() -> Unit) {
-    getOutdatedDependenciesData.set(GetOutdatedDependenciesBuilder(project).apply(action))
-}
-
-fun DepTrackCompanionExtension.getSuppressedVuln(action: GetSuppressedVulnBuilder.() -> Unit) {
-    getSuppressedVulnData.set(GetSuppressedVulnBuilder(project).apply(action))
 }

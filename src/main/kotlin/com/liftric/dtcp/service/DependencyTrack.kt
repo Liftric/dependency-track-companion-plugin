@@ -1,48 +1,55 @@
 package com.liftric.dtcp.service
 
-import com.liftric.dtcp.extensions.UploadSBOMBuilder
-import com.liftric.dtcp.extensions.UploadVexBuilder
 import com.liftric.dtcp.model.*
 import io.ktor.client.call.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import java.io.File
 
-class DependencyTrack(apiKey: String, baseUrl: String) {
+class DependencyTrack(apiKey: String, private val baseUrl: String) {
 
     private val client: ApiService = ApiService(apiKey)
-    private val baseUrl: String = baseUrl
 
     fun getProject(projectName: String, projectVersion: String): Project = runBlocking {
         val url = "$baseUrl/api/v1/project/lookup?name=$projectName&version=$projectVersion"
         client.getRequest(url).body()
     }
 
-    fun analyzeProjectFindings(projectUuid: String): UploadSBOMResponse = runBlocking {
-        val url = "$baseUrl/api/v1/finding/project/$projectUuid/analyze"
+    fun getProject(projectUUID: String): Project = runBlocking {
+        val url = "$baseUrl/api/v1/project/$projectUUID"
+        client.getRequest(url).body()
+    }
+
+    fun analyzeProjectFindings(projectUUID: String): UploadSBOMResponse = runBlocking {
+        val url = "$baseUrl/api/v1/finding/project/$projectUUID/analyze"
         client.postRequest(url).body()
     }
 
-    fun getProjectComponentsById(id: String): List<Component> = runBlocking {
-        val url = "$baseUrl/api/v1/component/project/$id"
+    fun getProjectComponentsById(projectUUID: String): List<Component> = runBlocking {
+        val url = "$baseUrl/api/v1/component/project/$projectUUID"
         client.getRequest(url).body()
     }
 
-    fun getProjectFindingsById(id: String): List<Finding> = runBlocking {
-        val url = "$baseUrl/api/v1/finding/project/$id?suppressed=true"
+    fun getProjectFindingsById(projectUUID: String): List<Finding> = runBlocking {
+        val url = "$baseUrl/api/v1/finding/project/$projectUUID?suppressed=true"
         client.getRequest(url).body()
     }
 
-    fun uploadVex(file: File, uploadVex: UploadVexBuilder) = runBlocking {
+    fun uploadVex(
+        file: File,
+        projectUUID: String?,
+        projectName: String?,
+        projectVersion: String?,
+    ) = runBlocking {
         val url = "$baseUrl/api/v1/vex"
         client.uploadFileWithFormData(url, file, "vex") {
-            uploadVex.project.orNull?.let {
-                append("project", it)
+            projectUUID?.let {
+                append("projectUUID", it)
             }
-            uploadVex.projectName.orNull?.let {
+            projectName?.let {
                 append("projectName", it)
             }
-            uploadVex.projectVersion.orNull?.let {
+            projectVersion?.let {
                 append("projectVersion", it)
             }
         }
@@ -50,30 +57,34 @@ class DependencyTrack(apiKey: String, baseUrl: String) {
 
     fun uploadSbom(
         file: File,
-        uploadSBOM: UploadSBOMBuilder,
+        autoCreate: Boolean,
+        projectUUID: String?,
+        projectName: String?,
+        projectVersion: String?,
+        parentUUID: String?,
+        parentName: String?,
+        parentVersion: String?,
     ): UploadSBOMResponse = runBlocking {
         val url = "$baseUrl/api/v1/bom"
         val res = client.uploadFileWithFormData(url, file, "bom") {
-            uploadSBOM.autoCreate.orNull?.let {
-                append("autoCreate", it)
+            append("autoCreate", autoCreate)
+            projectUUID?.let {
+                append("projectUUID", it)
             }
-            uploadSBOM.project.orNull?.let {
-                append("project", it)
-            }
-            uploadSBOM.projectName.orNull?.let {
+            projectName?.let {
                 append("projectName", it)
             }
-            uploadSBOM.projectVersion.orNull?.let {
+            projectVersion?.let {
                 append("projectVersion", it)
             }
-            uploadSBOM.parentName.orNull?.let {
+            parentUUID?.let {
+                append("parentUUID", it)
+            }
+            parentName?.let {
                 append("parentName", it)
             }
-            uploadSBOM.parentVersion.orNull?.let {
+            parentVersion?.let {
                 append("parentVersion", it)
-            }
-            uploadSBOM.parentUUID.orNull?.let {
-                append("parentUUID", it)
             }
         }
         res.body()

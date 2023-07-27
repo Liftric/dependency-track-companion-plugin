@@ -7,13 +7,14 @@ This plugin internally applies the [CycloneDX Gradle plugin](https://github.com/
 
 The plugin offers several tasks:
 
-- `runDepTrackWorkflow`: Runs `generateSbom`, `uploadSbom`, `generateVex` and `uploadVex` tasks for CI/CD.
+- `runDepTrackWorkflow`: Runs `generateSbom`, `uploadSbom`, `generateVex`, `uploadVex` and `riskScore` tasks for CI/CD.
 - `generateSbom`: Generates the SBOM (Runs "cyclonedxBom" from [cyclonedx-gradle-plugin](https://github.com/CycloneDX/cyclonedx-gradle-plugin) under the hood)
 - `uploadSbom`: Uploads SBOM file.
 - `generateVex`: Generates VEX file.
 - `uploadVex`: Uploads VEX file.
 - `getOutdatedDependencies`: Gets outdated dependencies.
 - `getSuppressedVuln`: Gets suppressed vulnerabilities.
+- `riskScore`: Gets risk score. If the risk score is higher than the specified value, the task will fail.
 
 ### Task Configuration
 
@@ -24,7 +25,13 @@ Each task requires certain inputs which are to be specified in your `build.gradl
 - `url`: Dependency Track API URL
 - `apiKey`: Dependency Track API KEY
 - `inputFile`: *Optional* - Default: build/reports/bom.json
-- `uploadSbom`: [Dependency Track BOM Upload Api Reference](https://yoursky.blue/documentation-api/dependencytrack.html#tag/bom/operation/UploadBom)
+- `autoCreate`: *Optional* - Default: false
+- `projectUUID`: *Optional* - You need to set UUID or projectName and projectVersion
+- `projectName`: *Optional* - You need to set UUID or projectName and projectVersion
+- `projectVersion`: *Optional* - You need to set UUID or projectName and projectVersion
+- `parentUUID`: *Optional* - Used for creating in a parent project 
+- `parentName`: *Optional* - Used for creating in a parent project 
+- `parentVersion`: *Optional* - Used for creating in a parent project
 
 #### generateVex
 
@@ -38,32 +45,36 @@ Each task requires certain inputs which are to be specified in your `build.gradl
 - `url`: Dependency Track API URL
 - `apiKey`: Dependency Track API KEY
 - `outputFile`: *Optional* (Default "build/reports/vex.json")
-- `uploadVex`: [Dependency Track VEX Upload API Reference](https://yoursky.blue/documentation-api/dependencytrack.html#tag/vex/operation/uploadVex)
+- `projectUUID`: *Optional* - You need to set UUID or projectName and projectVersion
+- `projectName`: *Optional* - You need to set UUID or projectName and projectVersion
+- `projectVersion`: *Optional* - You need to set UUID or projectName and projectVersion
 
 #### riskScore
 
 - `url`: Dependency Track API URL
 - `apiKey`: Dependency Track API KEY
-- `riskScore`: *Optional* - [Dependency Track Project Lookup API Reference](https://yoursky.blue/documentation-api/dependencytrack.html#tag/project/operation/getProjectByNameAndVersion)
+- `projectUUID`: *Optional* - You need to set UUID or projectName and projectVersion
+- `projectName`: *Optional* - You need to set UUID or projectName and projectVersion
+- `projectVersion`: *Optional* - You need to set UUID or projectName and projectVersion
+- `riskScore`: *Optional* - Used for failing the task if the risk score is higher than the specified value.
    - `timeout`: *Optional* - If specified, the task will wait for the risk score to be calculated. Default: 0 seconds
    - `maxRiskScore`: *Optional* - If specified, the task will fail if the risk score is higher than the specified value.
-
-#### runDepTrackWorkflow
-
-- This task requires configuration for `uploadSbom`, `generateVex`, and `uploadVex`.
-- Runs `uploadSbom`, `generateVex`, `uploadVex` and `riskScore` tasks for CI/CD.
 
 #### getOutdatedDependencies
 
 - `url`: Dependency Track API URL
 - `apiKey`: Dependency Track API KEY
-- `getOutdatedDependencies`: [Dependency Track Project Lookup API Reference](https://yoursky.blue/documentation-api/dependencytrack.html#tag/project/operation/getProjectByNameAndVersion)
+- `projectUUID`: *Optional* - You need to set UUID or projectName and projectVersion
+- `projectName`: *Optional* - You need to set UUID or projectName and projectVersion
+- `projectVersion`: *Optional* - You need to set UUID or projectName and projectVersion
 
 #### getSuppressedVuln
 
 - `url`: Dependency Track API URL
 - `apiKey`: Dependency Track API KEY
-- `getSuppressedVuln`: [Dependency Track Project Lookup API Reference](https://yoursky.blue/documentation-api/dependencytrack.html#tag/project/operation/getProjectByNameAndVersion)
+- `projectUUID`: *Optional* - You need to set UUID or projectName and projectVersion
+- `projectName`: *Optional* - You need to set UUID or projectName and projectVersion
+- `projectVersion`: *Optional* - You need to set UUID or projectName and projectVersion
 
 ## Example Configuration
 
@@ -78,27 +89,11 @@ val name: String by project
 dependencyTrackCompanion {
     url.set("https://api.dtrack.example.com")
     apiKey.set(System.getenv("DT_API_KEY"))
-    uploadSBOM {
-        autoCreate.set(true)
-        projectName.set(name)
-        projectVersion.set(version)
-        parentName.set(name)
-    }
-    uploadVex {
-        projectName.set(name)
-        projectVersion.set(version)
-    }
-    getOutdatedDependencies {
-        projectName.set(name)
-        projectVersion.set(version)
-    }
-    getSuppressedVuln {
-        projectName.set(name)
-        projectVersion.set(version)
-    }
+    autoCreate.set(true)
+    projectName.set(name)
+    projectVersion.set(version)
+    parentName.set(name)
     riskScore{
-        projectName.set(name)
-        projectVersion.set(version)
         timeout.set(20.seconds)
         maxRiskScore.set(7.0)
     }

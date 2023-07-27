@@ -21,6 +21,18 @@ abstract class RiskScoreTask : DefaultTask() {
     @get:Input
     abstract val url: Property<String>
 
+    @get:Input
+    @get:Optional
+    abstract val projectUUID: Property<String>
+
+    @get:Input
+    @get:Optional
+    abstract val projectName: Property<String>
+
+    @get:Input
+    @get:Optional
+    abstract val projectVersion: Property<String>
+
     @get:Nested
     @get:Optional
     abstract val riskScore: Property<RiskScoreBuilder>
@@ -35,23 +47,40 @@ abstract class RiskScoreTask : DefaultTask() {
             logger.info("Skipping risk score calculation")
             return
         }
-        val projectName = riskScoreValue.projectName.get()
-        val projectVersion = riskScoreValue.projectVersion.get()
+
+        val projectUUIDValue = projectUUID.orNull
+        val projectNameValue = projectName.orNull
+        val projectVersionValue = projectVersion.orNull
+
         val maxRiskScore = riskScoreValue.maxRiskScore.orNull
         val timeout = riskScoreValue.timeout.getOrElse(Duration.ZERO)
 
         val dt = DependencyTrack(apiKeyValue, urlValue)
-        val project = dt.getProject(projectName, projectVersion)
-        dt.analyzeProjectFindings(project.uuid)
+
+        val uuid = when {
+            projectUUIDValue != null -> projectUUIDValue
+            projectNameValue != null && projectVersionValue != null -> dt.getProject(
+                projectNameValue,
+                projectVersionValue
+            ).uuid
+
+            else -> throw GradleException("Either projectUUID or projectName and projectVersion must be set")
+        }
+
+        dt.analyzeProjectFindings(uuid)
         logger.info("Reanalyse triggered, waiting $timeout for analysis to finish")
         runBlocking {
             delay(timeout)
         }
 
-        val updatedProject = dt.getProject(projectName, projectVersion)
+        val updatedProject = dt.getProject(uuid)
         logger.info("Risk Score: ${updatedProject.lastInheritedRiskScore}")
 
-        if (maxRiskScore != null && maxRiskScore < updatedProject.lastInheritedRiskScore!!) {
+        if (updatedProject.lastInheritedRiskScore == null) {
+            throw GradleException("Risk score is null")
+        }
+
+        if (maxRiskScore != null && maxRiskScore < updatedProject.lastInheritedRiskScore) {
             throw GradleException("Risk score of ${updatedProject.lastInheritedRiskScore} exceeds maxRiskScore of $maxRiskScore")
         }
     }

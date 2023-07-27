@@ -20,6 +20,7 @@ class DepTrackCompanionPlugin : Plugin<Project> {
         extension.outputFile.convention(
             project.layout.buildDirectory.file("reports/vex.json")
         )
+        extension.autoCreate.convention(false)
 
         val generateSbom = project.tasks.register("generateSbom") { task ->
             task.group = taskGroup
@@ -33,7 +34,13 @@ class DepTrackCompanionPlugin : Plugin<Project> {
             task.url.set(extension.url)
             task.apiKey.set(extension.apiKey)
             task.inputFile.set(extension.inputFile)
-            task.uploadSBOM.set(extension.uploadSBOMData)
+            task.autoCreate.set(extension.autoCreate)
+            task.projectUUID.set(extension.projectUUID)
+            task.projectName.set(extension.projectName)
+            task.projectVersion.set(extension.projectVersion)
+            task.parentUUID.set(extension.parentUUID)
+            task.parentName.set(extension.parentName)
+            task.parentVersion.set(extension.parentVersion)
             task.dependsOn(generateSbom)
         }
 
@@ -54,7 +61,9 @@ class DepTrackCompanionPlugin : Plugin<Project> {
             task.outputFile.set(extension.outputFile)
             task.apiKey.set(extension.apiKey)
             task.url.set(extension.url)
-            task.uploadVex.set(extension.uploadVexData)
+            task.projectUUID.set(extension.projectUUID)
+            task.projectName.set(extension.projectName)
+            task.projectVersion.set(extension.projectVersion)
             task.mustRunAfter(generateVex)
             task.dependsOn(generateVex)
         }
@@ -64,6 +73,9 @@ class DepTrackCompanionPlugin : Plugin<Project> {
             task.description = "Get Risk Score"
             task.apiKey.set(extension.apiKey)
             task.url.set(extension.url)
+            task.projectUUID.set(extension.projectUUID)
+            task.projectName.set(extension.projectName)
+            task.projectVersion.set(extension.projectVersion)
             task.riskScore.set(extension.riskScoreData)
             task.mustRunAfter(uploadVex)
         }
@@ -80,7 +92,9 @@ class DepTrackCompanionPlugin : Plugin<Project> {
             task.description = "Gets outdated dependencies"
             task.apiKey.set(extension.apiKey)
             task.url.set(extension.url)
-            task.getOutdatedDependencies.set(extension.getOutdatedDependenciesData)
+            task.projectUUID.set(extension.projectUUID)
+            task.projectName.set(extension.projectName)
+            task.projectVersion.set(extension.projectVersion)
         }
 
         project.tasks.register("getSuppressedVuln", GetSuppressedVulnTask::class.java) { task ->
@@ -88,7 +102,9 @@ class DepTrackCompanionPlugin : Plugin<Project> {
             task.description = "Gets suppressed vulnerabilities"
             task.apiKey.set(extension.apiKey)
             task.url.set(extension.url)
-            task.getSuppressedVuln.set(extension.getSuppressedVulnData)
+            task.projectUUID.set(extension.projectUUID)
+            task.projectName.set(extension.projectName)
+            task.projectVersion.set(extension.projectVersion)
         }
     }
 }
