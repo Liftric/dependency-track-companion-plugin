@@ -69,7 +69,7 @@ class DependencyTrack(apiKey: String, private val baseUrl: String) {
         val res = client.uploadFileWithFormData(url, file, "bom") {
             append("autoCreate", autoCreate)
             projectUUID?.let {
-                append("projectUUID", it)
+                append("project", it)
             }
             projectName?.let {
                 append("projectName", it)
