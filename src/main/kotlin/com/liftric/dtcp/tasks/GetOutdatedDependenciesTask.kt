@@ -51,6 +51,10 @@ abstract class GetOutdatedDependenciesTask : DefaultTask() {
             else -> throw GradleException("Either projectUUID or projectName and projectVersion must be set")
         }
 
+        if (project.directDependencies == null) {
+            throw GradleException("Project does not have direct dependencies")
+        }
+
         val directDependencies = Json {
             ignoreUnknownKeys = true
         }.decodeFromString<List<DirectDependency>>(project.directDependencies)

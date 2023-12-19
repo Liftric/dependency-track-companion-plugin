@@ -24,7 +24,7 @@ data class Project(
     val version: String,
     val active: Boolean,
     val classifier: String,
-    val directDependencies: String,
+    val directDependencies: String? = null,
     val lastInheritedRiskScore: Double? = null,
 )
 
