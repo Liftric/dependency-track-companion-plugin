@@ -42,7 +42,7 @@ class IgnoreErrorApiService(
 
         client.put("${dependencyTrackApiEndpoint}/api/v1/project") {
             headers {
-                append("X-Api-Key", "$dependencyTrackAccessKey")
+                append("X-Api-Key", dependencyTrackAccessKey)
                 append("Content-Type", "application/json")
             }
             setBody(Json.encodeToString(projectData))

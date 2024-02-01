@@ -1,16 +1,11 @@
 package com.liftric.dtcp
 
-import com.liftric.dtcp.model.VexComponent
-import com.liftric.dtcp.model.VexVulnerability
 import com.liftric.dtcp.service.ApiService
 import com.liftric.dtcp.service.IgnoreErrorApiService
 import org.gradle.testkit.runner.GradleRunner
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import java.io.File
-import java.nio.file.Files
-import java.nio.file.Paths
-import java.nio.file.StandardCopyOption
 import kotlinx.coroutines.runBlocking
 
 /**
@@ -25,7 +20,7 @@ import kotlinx.coroutines.runBlocking
 class RunDepTrackWorkflowTest: IntegrationTestBase() {
     @Test
     fun testRunDepTrackWorkflowTest() {
-        val projectName = "dtTest"
+        val projectName = "runDepTrackWorkflowTest"
         val version = "1.0.0"
 
         val dependencyTrackAccessKey =

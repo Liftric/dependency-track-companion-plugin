@@ -7,6 +7,7 @@ This plugin internally applies the [CycloneDX Gradle plugin](https://github.com/
 
 The plugin offers several tasks:
 
+- `createProject`: Creates a Project
 - `generateSbom`: Generates the SBOM (Runs "cyclonedxBom" from [cyclonedx-gradle-plugin](https://github.com/CycloneDX/cyclonedx-gradle-plugin) under the hood)
 - `uploadSbom`: Uploads SBOM file.
 - `generateVex`: Generates VEX file.
@@ -20,6 +21,17 @@ The plugin offers several tasks:
 ### Task Configuration
 
 Each task requires certain inputs which are to be specified in your `build.gradle.kts`. The configuration for each task is as follows:
+
+#### createProject
+
+- `url`: Dependency Track API URL
+- `apiKey`: Dependency Track API KEY
+- `projectName`: The Name of the Project you want to create
+- `projectVersion`: *Optional* - The Version of the Project you want to create
+- `projectActive`: *Optional* - default is true, set to false to create an inactive Project
+- `projectTags`: *Optional* - add Tags to your Project
+- `parentUUID`: *Optional* - Used for creating in a parent project
+- `ignoreProjectAlreadyExists`: *Optional* - default is false, set to true to ignore "Project already exist" error
 
 #### uploadSbom
 

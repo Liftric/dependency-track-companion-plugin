@@ -22,6 +22,19 @@ class DepTrackCompanionPlugin : Plugin<Project> {
         )
         extension.autoCreate.convention(false)
 
+        val createProject = project.tasks.register("createProject", CreateProject::class.java) { task ->
+            task.group = taskGroup
+            task.description = "Creates a project"
+            task.url.set(extension.url)
+            task.apiKey.set(extension.apiKey)
+            task.projectActive.set(extension.projectActive)
+            task.projectTags.set(extension.projectTags)
+            task.projectName.set(extension.projectName)
+            task.projectVersion.set(extension.projectVersion)
+            task.parentUUID.set(extension.parentUUID)
+            task.ignoreProjectAlreadyExists.set(extension.ignoreProjectAlreadyExists)
+        }
+
         val generateSbom = project.tasks.register("generateSbom") { task ->
             task.group = taskGroup
             task.description = "Generate SBOM file"

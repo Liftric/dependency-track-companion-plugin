@@ -9,12 +9,12 @@ data class Component(
     val version: String,
     val purl: String,
     val uuid: String,
-    val repositoryMeta: RepositoryMeta? = null
+    val repositoryMeta: RepositoryMeta? = null,
 )
 
 @Serializable
 data class RepositoryMeta(
-    val latestVersion: String
+    val latestVersion: String,
 )
 
 @Serializable
@@ -26,6 +26,25 @@ data class Project(
     val classifier: String,
     val directDependencies: String? = null,
     val lastInheritedRiskScore: Double? = null,
+)
+
+@Serializable
+data class CreateProject(
+    val name: String,
+    val version: String? = null,
+    val active: Boolean,
+    val tags: List<ProjectTag>,
+    val parent: Parent? = null,
+) {
+    @Serializable
+    data class Parent(
+        val uuid: String? = null,
+    )
+}
+
+@Serializable
+data class ProjectTag(
+    val name: String,
 )
 
 @Serializable
