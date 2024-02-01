@@ -8,6 +8,7 @@ This plugin internally applies the [CycloneDX Gradle plugin](https://github.com/
 The plugin offers several tasks:
 
 - `runDepTrackWorkflow`: Runs `generateSbom`, `uploadSbom`, `generateVex`, `uploadVex` and `riskScore` tasks for CI/CD.
+- `createProject`: Creates a Project
 - `generateSbom`: Generates the SBOM (Runs "cyclonedxBom" from [cyclonedx-gradle-plugin](https://github.com/CycloneDX/cyclonedx-gradle-plugin) under the hood)
 - `uploadSbom`: Uploads SBOM file.
 - `generateVex`: Generates VEX file.
