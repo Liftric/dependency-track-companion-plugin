@@ -22,6 +22,7 @@ abstract class DepTrackCompanionExtension(val project: Project) {
     abstract val parentUUID: Property<String>
     abstract val parentName: Property<String>
     abstract val parentVersion: Property<String>
+    abstract val ignoreProjectAlreadyExists: Property<Boolean>
 
     abstract val riskScoreData: Property<RiskScoreBuilder>
 
