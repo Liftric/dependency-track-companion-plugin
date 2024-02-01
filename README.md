@@ -7,15 +7,16 @@ This plugin internally applies the [CycloneDX Gradle plugin](https://github.com/
 
 The plugin offers several tasks:
 
-- `runDepTrackWorkflow`: Runs `generateSbom`, `uploadSbom`, `generateVex`, `uploadVex` and `riskScore` tasks for CI/CD.
 - `createProject`: Creates a Project
 - `generateSbom`: Generates the SBOM (Runs "cyclonedxBom" from [cyclonedx-gradle-plugin](https://github.com/CycloneDX/cyclonedx-gradle-plugin) under the hood)
 - `uploadSbom`: Uploads SBOM file.
 - `generateVex`: Generates VEX file.
 - `uploadVex`: Uploads VEX file.
+- `analyzeProject`: Triggers Vulnerability Analysis on a specific project
+- `riskScore`: Gets risk score. If the risk score is higher than the specified value, the task will fail.
 - `getOutdatedDependencies`: Gets outdated dependencies.
 - `getSuppressedVuln`: Gets suppressed vulnerabilities.
-- `riskScore`: Gets risk score. If the risk score is higher than the specified value, the task will fail.
+- `runDepTrackWorkflow`: Runs `generateSbom`, `uploadSbom`, `generateVex` and `uploadVex` tasks for CI/CD.
 
 ### Task Configuration
 
@@ -71,6 +72,14 @@ Each task requires certain inputs which are to be specified in your `build.gradl
 - `riskScore`: *Optional* - Used for failing the task if the risk score is higher than the specified value.
    - `timeout`: *Optional* - If specified, the task will wait for the risk score to be calculated. Default: 0 seconds
    - `maxRiskScore`: *Optional* - If specified, the task will fail if the risk score is higher than the specified value.
+
+#### analyzeProject
+
+- `url`: Dependency Track API URL
+- `apiKey`: Dependency Track API KEY
+- `projectUUID`: *Optional* - You need to set UUID or projectName and projectVersion
+- `projectName`: *Optional* - You need to set UUID or projectName and projectVersion
+- `projectVersion`: *Optional* - You need to set UUID or projectName and projectVersion
 
 #### getOutdatedDependencies
 

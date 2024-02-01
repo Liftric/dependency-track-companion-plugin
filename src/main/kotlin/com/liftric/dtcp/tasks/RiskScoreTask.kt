@@ -11,7 +11,6 @@ import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.Optional
-import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 
 abstract class RiskScoreTask : DefaultTask() {
@@ -42,18 +41,18 @@ abstract class RiskScoreTask : DefaultTask() {
     fun riskScoreTask() {
         val apiKeyValue = apiKey.get()
         val urlValue = url.get()
+        val projectUUIDValue = projectUUID.orNull
+        val projectNameValue = projectName.orNull
+        val projectVersionValue = projectVersion.orNull
         val riskScoreValue = riskScore.orNull
+
         if (riskScoreValue == null) {
             logger.info("Skipping risk score calculation")
             return
         }
 
-        val projectUUIDValue = projectUUID.orNull
-        val projectNameValue = projectName.orNull
-        val projectVersionValue = projectVersion.orNull
-
         val maxRiskScore = riskScoreValue.maxRiskScore.orNull
-        val timeout = riskScoreValue.timeout.getOrElse(Duration.ZERO)
+        val timeout = riskScoreValue.timeout.orNull
 
         val dt = DependencyTrack(apiKeyValue, urlValue)
 
@@ -67,10 +66,11 @@ abstract class RiskScoreTask : DefaultTask() {
             else -> throw GradleException("Either projectUUID or projectName and projectVersion must be set")
         }
 
-        dt.analyzeProjectFindings(uuid)
-        logger.info("Reanalyse triggered, waiting $timeout for analysis to finish")
-        runBlocking {
-            delay(timeout)
+        if (timeout != null) {
+            runBlocking {
+                logger.info("waiting $timeout before getting risk score")
+                delay(timeout)
+            }
         }
 
         val updatedProject = dt.getProject(uuid)

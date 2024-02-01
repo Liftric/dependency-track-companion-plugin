@@ -81,6 +81,16 @@ class DepTrackCompanionPlugin : Plugin<Project> {
             task.dependsOn(generateVex)
         }
 
+        val analyzeProject = project.tasks.register("analyzeProject", AnalyzeProjectTask::class.java) { task ->
+            task.group = taskGroup
+            task.description = "Triggers Vulnerability Analysis on a specific project\n"
+            task.apiKey.set(extension.apiKey)
+            task.url.set(extension.url)
+            task.projectUUID.set(extension.projectUUID)
+            task.projectName.set(extension.projectName)
+            task.projectVersion.set(extension.projectVersion)
+        }
+
         val riskScore = project.tasks.register("riskScore", RiskScoreTask::class.java) { task ->
             task.group = taskGroup
             task.description = "Get Risk Score"
@@ -90,14 +100,13 @@ class DepTrackCompanionPlugin : Plugin<Project> {
             task.projectName.set(extension.projectName)
             task.projectVersion.set(extension.projectVersion)
             task.riskScore.set(extension.riskScoreData)
-            task.mustRunAfter(uploadVex)
         }
 
         project.tasks.register("runDepTrackWorkflow") { task ->
             task.group = taskGroup
             task.description =
-                "Runs uploadSbom, generateVex and uploadVex for CI/CD"
-            task.dependsOn(generateSbom, uploadSbom, generateVex, uploadVex, riskScore)
+                "Runs generateSbom, uploadSbom, generateVex, uploadVex for CI/CD integration"
+            task.dependsOn(generateSbom, uploadSbom, generateVex, uploadVex)
         }
 
         project.tasks.register("getOutdatedDependencies", GetOutdatedDependenciesTask::class.java) { task ->
