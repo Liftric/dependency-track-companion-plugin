@@ -9,6 +9,7 @@ import io.ktor.client.statement.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.http.*
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import java.io.File
 
@@ -59,6 +60,17 @@ class ApiService(apiKey: String) {
             headers {
                 append(HttpHeaders.ContentType, ContentType.Application.Json)
             }
+        }
+    }
+
+    suspend fun <T> putRequest(url: String, body: T, serializer: KSerializer<T>): HttpResponse {
+        val jsonBody = Json.encodeToString(serializer, body)
+        return client.put(url) {
+            headers {
+                append(HttpHeaders.ContentType, ContentType.Application.Json)
+            }
+            contentType(ContentType.Application.Json)
+            setBody(jsonBody)
         }
     }
 }

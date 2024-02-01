@@ -101,4 +101,9 @@ class DependencyTrack(apiKey: String, private val baseUrl: String) {
         } while (response.processing)
         println("Analysis is complete.")
     }
+
+    fun createProject(project: CreateProject) = runBlocking {
+        val url = "$baseUrl/api/v1/project"
+        client.putRequest(url, project, CreateProject.serializer())
+    }
 }

@@ -1,5 +1,6 @@
 package com.liftric.dtcp.extensions
 
+import com.liftric.dtcp.model.ProjectTag
 import org.gradle.api.Project
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
@@ -16,9 +17,12 @@ abstract class DepTrackCompanionExtension(val project: Project) {
     abstract val projectUUID: Property<String>
     abstract val projectName: Property<String>
     abstract val projectVersion: Property<String>
+    abstract val projectActive: Property<Boolean>
+    abstract val projectTags: ListProperty<ProjectTag>
     abstract val parentUUID: Property<String>
     abstract val parentName: Property<String>
     abstract val parentVersion: Property<String>
+    abstract val ignoreProjectAlreadyExists: Property<Boolean>
 
     abstract val riskScoreData: Property<RiskScoreBuilder>
 
