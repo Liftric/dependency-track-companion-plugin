@@ -68,6 +68,16 @@ class DepTrackCompanionPlugin : Plugin<Project> {
             task.dependsOn(generateVex)
         }
 
+        val analyzeProject = project.tasks.register("analyzeProject", AnalyzeProjectTask::class.java) { task ->
+            task.group = taskGroup
+            task.description = "Triggers Vulnerability Analysis on a specific project\n"
+            task.apiKey.set(extension.apiKey)
+            task.url.set(extension.url)
+            task.projectUUID.set(extension.projectUUID)
+            task.projectName.set(extension.projectName)
+            task.projectVersion.set(extension.projectVersion)
+        }
+
         val riskScore = project.tasks.register("riskScore", RiskScoreTask::class.java) { task ->
             task.group = taskGroup
             task.description = "Get Risk Score"
