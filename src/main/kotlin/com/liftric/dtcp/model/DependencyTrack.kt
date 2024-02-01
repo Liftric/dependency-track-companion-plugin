@@ -29,6 +29,20 @@ data class Project(
 )
 
 @Serializable
+data class CreateProject(
+    val name: String,
+    val version: String? = null,
+    val active: Boolean,
+    val tags: List<ProjectTag>,
+    val parent: Parent? = null,
+) {
+    @Serializable
+    data class Parent(
+        val uuid: String? = null,
+    )
+}
+
+@Serializable
 data class ProjectTag(
     val name: String,
 )
