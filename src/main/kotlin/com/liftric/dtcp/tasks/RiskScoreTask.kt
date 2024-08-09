@@ -11,7 +11,6 @@ import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.Optional
-import kotlin.time.ExperimentalTime
 
 abstract class RiskScoreTask : DefaultTask() {
     @get:Input
@@ -36,7 +35,6 @@ abstract class RiskScoreTask : DefaultTask() {
     @get:Optional
     abstract val riskScore: Property<RiskScoreBuilder>
 
-    @OptIn(ExperimentalTime::class)
     @TaskAction
     fun riskScoreTask() {
         val apiKeyValue = apiKey.get()

@@ -6,9 +6,8 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Optional
 import kotlin.time.Duration
-import kotlin.time.ExperimentalTime
 
-data class RiskScore @OptIn(ExperimentalTime::class) constructor(
+data class RiskScore constructor(
     val maxRiskScore: Double?,
     val timeout: Duration?,
 )
@@ -20,12 +19,10 @@ class RiskScoreBuilder(@get:Internal val proj: Project) {
     @get:Optional
     val maxRiskScore: Property<Double> = proj.objects.property(Double::class.java)
 
-    @OptIn(ExperimentalTime::class)
     @get:Input
     @get:Optional
     val timeout: Property<Duration> = proj.objects.property(Duration::class.java)
 
-    @OptIn(ExperimentalTime::class)
     fun build(): RiskScore = RiskScore(
         maxRiskScore = this.maxRiskScore.orNull,
         timeout = this.timeout.orNull,
