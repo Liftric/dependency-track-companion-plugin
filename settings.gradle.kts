@@ -4,17 +4,17 @@ pluginManagement {
     dependencyResolutionManagement {
         versionCatalogs {
             create("libs") {
-                version("kotlin", "1.8.21")
-                version("ktor", "2.3.0")
-                version("cyclonedx-core-java", "7.3.2")
-                version("cyclonedx-gradle-plugin", "1.7.4")
-                version("junit-bom", "5.9.3")
+                version("kotlin", "1.9.25")
+                version("ktor", "2.3.12")
+                version("cyclonedx-core-java", "9.0.5")
+                version("cyclonedx-gradle-plugin", "1.9.0")
+                version("junit-bom", "5.10.3")
 
-                plugin("versioning", "net.nemerosa.versioning").version("3.0.0")
-                plugin("dockerCompose", "com.avast.gradle.docker-compose").version("0.16.12")
+                plugin("versioning", "net.nemerosa.versioning").version("3.1.0")
+                plugin("dockerCompose", "com.avast.gradle.docker-compose").version("0.17.7")
                 plugin("kotlinJvm", "org.jetbrains.kotlin.jvm").versionRef("kotlin")
                 plugin("kotlinSerialization", "org.jetbrains.kotlin.plugin.serialization").versionRef("kotlin")
-                plugin("gradlePluginPublish", "com.gradle.plugin-publish").version("1.2.0")
+                plugin("gradlePluginPublish", "com.gradle.plugin-publish").version("1.2.1")
 
                 library("kotlinStdlibJdk8", "org.jetbrains.kotlin", "kotlin-stdlib-jdk8").versionRef("kotlin")
                 library("cyclonedxCoreJava", "org.cyclonedx", "cyclonedx-core-java").versionRef("cyclonedx-core-java")
