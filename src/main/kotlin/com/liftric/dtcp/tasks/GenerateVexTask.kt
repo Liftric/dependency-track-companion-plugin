@@ -4,7 +4,8 @@ import com.liftric.dtcp.extensions.VexComponent
 import com.liftric.dtcp.extensions.VexComponentBuilder
 import com.liftric.dtcp.extensions.VexVulnerability
 import com.liftric.dtcp.extensions.VexVulnerabilityBuilder
-import org.cyclonedx.generators.json.BomJsonGenerator14
+import org.cyclonedx.Version
+import org.cyclonedx.generators.json.BomJsonGenerator
 import org.cyclonedx.model.Bom
 import org.cyclonedx.model.vulnerability.Vulnerability
 import org.cyclonedx.parsers.JsonParser
@@ -128,7 +129,7 @@ abstract class GenerateVexTask : DefaultTask() {
     private fun parseInputFile(file: File): Bom = JsonParser().parse(file)
 
     private fun writeVexFile(outputFile: File) {
-        val json = BomJsonGenerator14(vexFile).toJsonString()
+        val json = BomJsonGenerator(vexFile, Version.VERSION_14).toJsonString()
         Files.createDirectories(Paths.get(outputFile.parent))
         outputFile.writeText(json)
     }

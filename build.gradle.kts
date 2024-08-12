@@ -69,6 +69,8 @@ tasks.named("publishPlugins") {
 }
 
 gradlePlugin {
+    website.set("https://github.com/Liftric/dependency-track-companion-plugin")
+    vcsUrl.set("https://github.com/Liftric/dependency-track-companion-plugin")
     testSourceSets(integrationTest)
     plugins {
         create("dependency-track-companion-plugin") {
@@ -76,15 +78,9 @@ gradlePlugin {
             implementationClass = "$group.dtcp.DepTrackCompanionPlugin"
             displayName = name
             description = "Common tasks for Dependency Track interaction, like SBOM upload or VEX Generation"
+            tags.set(listOf("dependency", "track", "sbom", "vex", "upload", "generate"))
         }
     }
-}
-
-pluginBundle {
-    website = "https://github.com/Liftric/dependency-track-companion-plugin"
-    vcsUrl = "https://github.com/Liftric/dependency-track-companion-plugin"
-    description = "Common tasks for Dependency Track interaction, like SBOM upload or VEX Generation"
-    tags = listOf("dependency", "track", "sbom", "vex", "upload", "generate")
 }
 
 dependencies {

@@ -3,7 +3,6 @@ package com.liftric.dtcp.tasks
 import com.liftric.dtcp.model.Component
 import com.liftric.dtcp.model.DirectDependency
 import com.liftric.dtcp.service.DependencyTrack
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
