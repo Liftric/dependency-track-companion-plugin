@@ -62,6 +62,9 @@ tasks {
     withType(ProcessResources::class.java) {
         dependsOn(propertiesTask)
     }
+    withType(Jar::class.java) {
+        dependsOn(propertiesTask)
+    }
 }
 
 tasks.named("publishPlugins") {
