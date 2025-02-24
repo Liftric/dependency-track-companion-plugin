@@ -6,8 +6,8 @@ pluginManagement {
             create("libs") {
                 version("kotlin", "1.9.25")
                 version("ktor", "2.3.12")
-                version("cyclonedx-core-java", "9.0.5")
-                version("cyclonedx-gradle-plugin", "1.9.0")
+                version("cyclonedx-core-java", "10.1.0")
+                version("cyclonedx-gradle-plugin", "2.1.0")
                 version("junit-bom", "5.10.3")
 
                 plugin("versioning", "net.nemerosa.versioning").version("3.1.0")
