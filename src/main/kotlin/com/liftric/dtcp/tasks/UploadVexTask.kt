@@ -45,12 +45,13 @@ abstract class UploadVexTask : DefaultTask() {
         }
 
         val dt = DependencyTrack(apiKeyValue, urlValue)
-        dt.uploadVex(
+        val response = dt.uploadVex(
             file = outputFileValue,
             projectUUID = projectUUIDValue,
             projectName = projectNameValue,
             projectVersion = projectVersionValue,
         )
+        dt.waitForTokenCompletion(response.token)
         logger.info("Uploaded VEX file to Dependency-Track")
     }
 }
