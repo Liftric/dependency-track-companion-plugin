@@ -76,6 +76,6 @@ abstract class UploadSBOMTask : DefaultTask() {
             parentName = parentNameValue,
             parentVersion = parentVersionValue,
         )
-        dt.waitForSbomAnalysis(response.token)
+        dt.waitForTokenCompletion(response.token)
     }
 }

@@ -20,7 +20,7 @@ class DependencyTrack(apiKey: String, private val baseUrl: String) {
         client.getRequest(url).body()
     }
 
-    fun analyzeProjectFindings(projectUUID: String): UploadSBOMResponse = runBlocking {
+    fun analyzeProjectFindings(projectUUID: String): TaskTokenResponse = runBlocking {
         val url = "$baseUrl/api/v1/finding/project/$projectUUID/analyze"
         client.postRequest(url).body()
     }
@@ -40,7 +40,7 @@ class DependencyTrack(apiKey: String, private val baseUrl: String) {
         projectUUID: String?,
         projectName: String?,
         projectVersion: String?,
-    ) = runBlocking {
+    ): TaskTokenResponse = runBlocking {
         val url = "$baseUrl/api/v1/vex"
         client.uploadFileWithFormData(url, file, "vex") {
             projectUUID?.let {
@@ -52,7 +52,7 @@ class DependencyTrack(apiKey: String, private val baseUrl: String) {
             projectVersion?.let {
                 append("projectVersion", it)
             }
-        }
+        }.body()
     }
 
     fun uploadSbom(
@@ -64,7 +64,7 @@ class DependencyTrack(apiKey: String, private val baseUrl: String) {
         parentUUID: String?,
         parentName: String?,
         parentVersion: String?,
-    ): UploadSBOMResponse = runBlocking {
+    ): TaskTokenResponse = runBlocking {
         val url = "$baseUrl/api/v1/bom"
         val res = client.uploadFileWithFormData(url, file, "bom") {
             append("autoCreate", autoCreate)
@@ -90,16 +90,16 @@ class DependencyTrack(apiKey: String, private val baseUrl: String) {
         res.body()
     }
 
-    fun waitForSbomAnalysis(token: String) = runBlocking {
-        val url = "$baseUrl/api/v1/bom/token/$token"
-        var response: SBOMProcessingResponse
+    fun waitForTokenCompletion(token: String) = runBlocking {
+        val url = "$baseUrl/api/v1/event/token/$token"
+        var response: EventTokenResponse
 
         do {
-            println("Waiting for SBOM Analysis Processing...")
+            println("Waiting for task completion...")
             delay(2000)
             response = client.getRequest(url).body()
         } while (response.processing)
-        println("Analysis is complete.")
+        println("Task is complete.")
     }
 
     fun createProject(project: CreateProject) = runBlocking {

@@ -48,6 +48,7 @@ abstract class AnalyzeProjectTask : DefaultTask() {
             else -> throw GradleException("Either projectUUID or projectName and projectVersion must be set")
         }
 
-        dt.analyzeProjectFindings(uuid)
+        val response = dt.analyzeProjectFindings(uuid)
+        dt.waitForTokenCompletion(response.token)
     }
 }
