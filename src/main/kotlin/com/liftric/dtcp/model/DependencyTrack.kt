@@ -87,7 +87,7 @@ data class Analysis(
 )
 
 @Serializable
-data class UploadSBOMResponse(val token: String)
+data class TaskTokenResponse(val token: String)
 
 @Serializable
 data class EventTokenResponse(val processing: Boolean)
