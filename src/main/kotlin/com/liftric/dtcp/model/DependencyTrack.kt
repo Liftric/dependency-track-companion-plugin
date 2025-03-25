@@ -90,4 +90,4 @@ data class Analysis(
 data class UploadSBOMResponse(val token: String)
 
 @Serializable
-data class SBOMProcessingResponse(val processing: Boolean)
+data class EventTokenResponse(val processing: Boolean)
