@@ -6,9 +6,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import java.io.File
 
-class DependencyTrack(apiKey: String, private val baseUrl: String) {
+class DependencyTrack(apiKey: String, private val baseUrl: String, private val disableStrictTLS: Boolean) {
 
-    private val client: ApiService = ApiService(apiKey)
+    private val client: ApiService = ApiService(apiKey, disableStrictTLS)
 
     fun getProject(projectName: String, projectVersion: String): Project = runBlocking {
         val url = "$baseUrl/api/v1/project/lookup?name=$projectName&version=$projectVersion"

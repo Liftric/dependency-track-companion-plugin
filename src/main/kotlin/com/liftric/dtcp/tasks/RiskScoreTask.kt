@@ -35,6 +35,10 @@ abstract class RiskScoreTask : DefaultTask() {
     @get:Optional
     abstract val riskScore: Property<RiskScoreBuilder>
 
+    @get:Input
+    @get:Optional
+    abstract val disableStrictTLS: Property<Boolean>
+
     @TaskAction
     fun riskScoreTask() {
         val apiKeyValue = apiKey.get()
@@ -52,7 +56,7 @@ abstract class RiskScoreTask : DefaultTask() {
         val maxRiskScore = riskScoreValue.maxRiskScore.orNull
         val timeout = riskScoreValue.timeout.orNull
 
-        val dt = DependencyTrack(apiKeyValue, urlValue)
+        val dt = DependencyTrack(apiKeyValue, urlValue, disableStrictTLS.getOrElse(false))
 
         val uuid = when {
             projectUUIDValue != null -> projectUUIDValue

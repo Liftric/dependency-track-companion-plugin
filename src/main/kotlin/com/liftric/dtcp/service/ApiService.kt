@@ -12,8 +12,24 @@ import io.ktor.http.*
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import java.io.File
+import java.security.cert.X509Certificate
+import javax.net.ssl.X509TrustManager
 
-class ApiService(apiKey: String) {
+class ApiService(apiKey: String, disableStrictTLS: Boolean = false) {
+
+    private val trustAllManager = if (disableStrictTLS) {
+        object: X509TrustManager {
+            @Suppress("kotlin:S4830")
+            override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) { /* NOOP */ }
+
+            @Suppress("kotlin:S4830")
+            override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) { /* NOOP */ }
+
+            override fun getAcceptedIssuers(): Array<X509Certificate>? = null
+        }
+    } else {
+        null
+    }
 
     private val client = HttpClient(CIO) {
         expectSuccess = true
@@ -26,6 +42,11 @@ class ApiService(apiKey: String) {
             json(Json {
                 ignoreUnknownKeys = true
             })
+        }
+        engine {
+            https {
+                trustManager = trustAllManager
+            }
         }
     }
 

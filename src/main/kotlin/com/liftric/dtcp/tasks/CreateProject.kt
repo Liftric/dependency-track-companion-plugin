@@ -40,9 +40,13 @@ abstract class CreateProject : DefaultTask() {
     @get:Optional
     abstract val ignoreProjectAlreadyExists: Property<Boolean>
 
+    @get:Input
+    @get:Optional
+    abstract val disableStrictTLS: Property<Boolean>
+
     @TaskAction
     fun createProjectTask() {
-        val dt = DependencyTrack(apiKey.get(), url.get())
+        val dt = DependencyTrack(apiKey.get(), url.get(), disableStrictTLS.getOrElse(false))
 
         val project = CreateProject(
             name = projectName.get(),

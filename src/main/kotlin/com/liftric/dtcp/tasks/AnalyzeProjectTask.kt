@@ -27,6 +27,10 @@ abstract class AnalyzeProjectTask : DefaultTask() {
     @get:Optional
     abstract val projectVersion: Property<String>
 
+    @get:Input
+    @get:Optional
+    abstract val disableStrictTLS: Property<Boolean>
+
     @TaskAction
     fun analyzeProjectTask() {
         val apiKeyValue = apiKey.get()
@@ -36,7 +40,7 @@ abstract class AnalyzeProjectTask : DefaultTask() {
         val projectNameValue = projectName.orNull
         val projectVersionValue = projectVersion.orNull
 
-        val dt = DependencyTrack(apiKeyValue, urlValue)
+        val dt = DependencyTrack(apiKeyValue, urlValue, disableStrictTLS.getOrElse(false))
 
         val uuid = when {
             projectUUIDValue != null -> projectUUIDValue
