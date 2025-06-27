@@ -54,6 +54,7 @@ class DepTrackCompanionPlugin : Plugin<Project> {
             task.parentUUID.set(extension.parentUUID)
             task.parentName.set(extension.parentName)
             task.parentVersion.set(extension.parentVersion)
+            task.ignoreErrors.set(extension.ignoreErrors)
             task.dependsOn(generateSbom)
         }
 
