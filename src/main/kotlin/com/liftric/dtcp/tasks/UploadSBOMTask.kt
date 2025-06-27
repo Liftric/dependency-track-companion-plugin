@@ -51,6 +51,10 @@ abstract class UploadSBOMTask : DefaultTask() {
 
     @get:Input
     @get:Optional
+    abstract val disableStrictTLS: Property<Boolean>
+
+    @get:Input
+    @get:Optional
     abstract val ignoreErrors: Property<Boolean>
 
     @TaskAction
@@ -71,7 +75,7 @@ abstract class UploadSBOMTask : DefaultTask() {
             throw GradleException("Either projectUUID or projectName and projectVersion must be set")
         }
 
-        val dt = DependencyTrack(apiKeyValue, urlValue)
+        val dt = DependencyTrack(apiKeyValue, urlValue, disableStrictTLS.getOrElse(false))
         try {
             val response = dt.uploadSbom(
                 file = inputFileValue,

@@ -29,6 +29,10 @@ abstract class UploadVexTask : DefaultTask() {
     @get:Optional
     abstract val projectVersion: Property<String>
 
+    @get:Input
+    @get:Optional
+    abstract val disableStrictTLS: Property<Boolean>
+
     @TaskAction
     fun uploadVexTask() {
         val apiKeyValue = apiKey.get()
@@ -44,7 +48,7 @@ abstract class UploadVexTask : DefaultTask() {
             }
         }
 
-        val dt = DependencyTrack(apiKeyValue, urlValue)
+        val dt = DependencyTrack(apiKeyValue, urlValue, disableStrictTLS.getOrElse(false))
         val response = dt.uploadVex(
             file = outputFileValue,
             projectUUID = projectUUIDValue,

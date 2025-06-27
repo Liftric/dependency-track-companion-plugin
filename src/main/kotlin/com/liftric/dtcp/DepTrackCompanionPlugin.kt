@@ -33,6 +33,7 @@ class DepTrackCompanionPlugin : Plugin<Project> {
             task.projectVersion.set(extension.projectVersion)
             task.parentUUID.set(extension.parentUUID)
             task.ignoreProjectAlreadyExists.set(extension.ignoreProjectAlreadyExists)
+            task.disableStrictTLS.set(extension.disableStrictTLS)
         }
 
         val generateSbom = project.tasks.register("generateSbom") { task ->
@@ -54,6 +55,7 @@ class DepTrackCompanionPlugin : Plugin<Project> {
             task.parentUUID.set(extension.parentUUID)
             task.parentName.set(extension.parentName)
             task.parentVersion.set(extension.parentVersion)
+            task.disableStrictTLS.set(extension.disableStrictTLS)
             task.ignoreErrors.set(extension.ignoreErrors)
             task.dependsOn(generateSbom)
         }
@@ -78,6 +80,7 @@ class DepTrackCompanionPlugin : Plugin<Project> {
             task.projectUUID.set(extension.projectUUID)
             task.projectName.set(extension.projectName)
             task.projectVersion.set(extension.projectVersion)
+            task.disableStrictTLS.set(extension.disableStrictTLS)
             task.mustRunAfter(generateVex)
             task.dependsOn(generateVex)
         }
@@ -90,6 +93,7 @@ class DepTrackCompanionPlugin : Plugin<Project> {
             task.projectUUID.set(extension.projectUUID)
             task.projectName.set(extension.projectName)
             task.projectVersion.set(extension.projectVersion)
+            task.disableStrictTLS.set(extension.disableStrictTLS)
         }
 
         val riskScore = project.tasks.register("riskScore", RiskScoreTask::class.java) { task ->
@@ -101,6 +105,7 @@ class DepTrackCompanionPlugin : Plugin<Project> {
             task.projectName.set(extension.projectName)
             task.projectVersion.set(extension.projectVersion)
             task.riskScore.set(extension.riskScoreData)
+            task.disableStrictTLS.set(extension.disableStrictTLS)
         }
 
         project.tasks.register("runDepTrackWorkflow") { task ->
@@ -118,6 +123,7 @@ class DepTrackCompanionPlugin : Plugin<Project> {
             task.projectUUID.set(extension.projectUUID)
             task.projectName.set(extension.projectName)
             task.projectVersion.set(extension.projectVersion)
+            task.disableStrictTLS.set(extension.disableStrictTLS)
         }
 
         project.tasks.register("getSuppressedVuln", GetSuppressedVulnTask::class.java) { task ->
@@ -128,6 +134,7 @@ class DepTrackCompanionPlugin : Plugin<Project> {
             task.projectUUID.set(extension.projectUUID)
             task.projectName.set(extension.projectName)
             task.projectVersion.set(extension.projectVersion)
+            task.disableStrictTLS.set(extension.disableStrictTLS)
         }
     }
 }

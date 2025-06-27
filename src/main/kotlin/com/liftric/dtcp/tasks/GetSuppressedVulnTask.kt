@@ -28,6 +28,10 @@ abstract class GetSuppressedVulnTask : DefaultTask() {
     @get:Optional
     abstract val projectVersion: Property<String>
 
+    @get:Input
+    @get:Optional
+    abstract val disableStrictTLS: Property<Boolean>
+
     @TaskAction
     fun getSuppressedVulnTask() {
         val apiKeyValue = apiKey.get()
@@ -36,7 +40,7 @@ abstract class GetSuppressedVulnTask : DefaultTask() {
         val projectNameValue = projectName.orNull
         val projectVersionValue = projectVersion.orNull
 
-        val dt = DependencyTrack(apiKeyValue, urlValue)
+        val dt = DependencyTrack(apiKeyValue, urlValue, disableStrictTLS.getOrElse(false))
 
         val findings = when {
             projectUUIDValue != null -> dt.getProjectFindingsById(projectUUIDValue)
