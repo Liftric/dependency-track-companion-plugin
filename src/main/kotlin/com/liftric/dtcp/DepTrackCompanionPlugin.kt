@@ -56,6 +56,7 @@ class DepTrackCompanionPlugin : Plugin<Project> {
             task.parentName.set(extension.parentName)
             task.parentVersion.set(extension.parentVersion)
             task.disableStrictTLS.set(extension.disableStrictTLS)
+            task.ignoreErrors.set(extension.ignoreErrors)
             task.dependsOn(generateSbom)
         }
 

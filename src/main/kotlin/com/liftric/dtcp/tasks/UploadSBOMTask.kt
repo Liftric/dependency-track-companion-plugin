@@ -1,6 +1,7 @@
 package com.liftric.dtcp.tasks
 
 import com.liftric.dtcp.service.DependencyTrack
+import io.ktor.client.plugins.ResponseException
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.file.RegularFileProperty
@@ -52,6 +53,10 @@ abstract class UploadSBOMTask : DefaultTask() {
     @get:Optional
     abstract val disableStrictTLS: Property<Boolean>
 
+    @get:Input
+    @get:Optional
+    abstract val ignoreErrors: Property<Boolean>
+
     @TaskAction
     fun uploadSBOMTask() {
         val inputFileValue = inputFile.get().asFile
@@ -64,22 +69,32 @@ abstract class UploadSBOMTask : DefaultTask() {
         val parentNameValue = parentName.orNull
         val parentVersionValue = parentVersion.orNull
         val parentUUIDValue = parentUUID.orNull
+        val ignoreErrors = ignoreErrors.getOrElse(false)
 
         if (projectUUIDValue == null && (projectNameValue == null && projectVersionValue == null)) {
             throw GradleException("Either projectUUID or projectName and projectVersion must be set")
         }
 
         val dt = DependencyTrack(apiKeyValue, urlValue, disableStrictTLS.getOrElse(false))
-        val response = dt.uploadSbom(
-            file = inputFileValue,
-            autoCreate = autoCreateValue,
-            projectUUID = projectUUIDValue,
-            projectName = projectNameValue,
-            projectVersion = projectVersionValue,
-            parentUUID = parentUUIDValue,
-            parentName = parentNameValue,
-            parentVersion = parentVersionValue,
-        )
-        dt.waitForTokenCompletion(response.token)
+        try {
+            val response = dt.uploadSbom(
+                file = inputFileValue,
+                autoCreate = autoCreateValue,
+                projectUUID = projectUUIDValue,
+                projectName = projectNameValue,
+                projectVersion = projectVersionValue,
+                parentUUID = parentUUIDValue,
+                parentName = parentNameValue,
+                parentVersion = parentVersionValue,
+            )
+            dt.waitForTokenCompletion(response.token)
+        }
+        catch (e: ResponseException) {
+            if (ignoreErrors) {
+                logger.warn("Error uploading SBOM: ${e.message}")
+            } else {
+                throw e
+            }
+        }
     }
 }
