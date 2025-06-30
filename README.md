@@ -32,6 +32,7 @@ Each task requires certain inputs which are to be specified in your `build.gradl
 - `projectTags`: *Optional* - add Tags to your Project
 - `parentUUID`: *Optional* - Used for creating in a parent project
 - `ignoreProjectAlreadyExists`: *Optional* - default is false, set to true to ignore "Project already exist" error
+- `disableStrictTLS`: *Optional* - Used for disabling strict TLS checking for ex. self-signed certificates (default: false)
 
 #### uploadSbom
 
@@ -45,6 +46,8 @@ Each task requires certain inputs which are to be specified in your `build.gradl
 - `parentUUID`: *Optional* - Used for creating in a parent project 
 - `parentName`: *Optional* - Used for creating in a parent project 
 - `parentVersion`: *Optional* - Used for creating in a parent project
+- `ignoreErrors`: *Optional* - Used for ignore errors during upload to prevent build failures (default: false)
+- `disableStrictTLS`: *Optional* - Used for disabling strict TLS checking for ex. self-signed certificates (default: false)
 
 #### generateVex
 
@@ -61,6 +64,7 @@ Each task requires certain inputs which are to be specified in your `build.gradl
 - `projectUUID`: *Optional* - You need to set UUID or projectName and projectVersion
 - `projectName`: *Optional* - You need to set UUID or projectName and projectVersion
 - `projectVersion`: *Optional* - You need to set UUID or projectName and projectVersion
+- `disableStrictTLS`: *Optional* - Used for disabling strict TLS checking for ex. self-signed certificates (default: false)
 
 #### riskScore
 
@@ -72,6 +76,7 @@ Each task requires certain inputs which are to be specified in your `build.gradl
 - `riskScore`: *Optional* - Used for failing the task if the risk score is higher than the specified value.
    - `timeout`: *Optional* - If specified, the task will wait for the risk score to be calculated. Default: 0 seconds
    - `maxRiskScore`: *Optional* - If specified, the task will fail if the risk score is higher than the specified value.
+- `disableStrictTLS`: *Optional* - Used for disabling strict TLS checking for ex. self-signed certificates (default: false)
 
 #### analyzeProject
 
@@ -80,6 +85,7 @@ Each task requires certain inputs which are to be specified in your `build.gradl
 - `projectUUID`: *Optional* - You need to set UUID or projectName and projectVersion
 - `projectName`: *Optional* - You need to set UUID or projectName and projectVersion
 - `projectVersion`: *Optional* - You need to set UUID or projectName and projectVersion
+- `disableStrictTLS`: *Optional* - Used for disabling strict TLS checking for ex. self-signed certificates (default: false)
 
 #### getOutdatedDependencies
 
@@ -88,6 +94,7 @@ Each task requires certain inputs which are to be specified in your `build.gradl
 - `projectUUID`: *Optional* - You need to set UUID or projectName and projectVersion
 - `projectName`: *Optional* - You need to set UUID or projectName and projectVersion
 - `projectVersion`: *Optional* - You need to set UUID or projectName and projectVersion
+- `disableStrictTLS`: *Optional* - Used for disabling strict TLS checking for ex. self-signed certificates (default: false)
 
 #### getSuppressedVuln
 
@@ -96,6 +103,7 @@ Each task requires certain inputs which are to be specified in your `build.gradl
 - `projectUUID`: *Optional* - You need to set UUID or projectName and projectVersion
 - `projectName`: *Optional* - You need to set UUID or projectName and projectVersion
 - `projectVersion`: *Optional* - You need to set UUID or projectName and projectVersion
+- `disableStrictTLS`: *Optional* - Used for disabling strict TLS checking for ex. self-signed certificates (default: false)
 
 ## Example Configuration
 
