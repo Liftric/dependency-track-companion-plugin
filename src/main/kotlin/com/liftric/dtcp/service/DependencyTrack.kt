@@ -44,7 +44,7 @@ class DependencyTrack(apiKey: String, private val baseUrl: String, private val d
         val url = "$baseUrl/api/v1/vex"
         client.uploadFileWithFormData(url, file, "vex") {
             projectUUID?.let {
-                append("projectUUID", it)
+                append("project", it)
             }
             projectName?.let {
                 append("projectName", it)
