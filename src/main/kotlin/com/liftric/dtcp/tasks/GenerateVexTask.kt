@@ -36,7 +36,7 @@ abstract class GenerateVexTask : DefaultTask() {
     private val vexFile = Bom()
 
     @TaskAction
-    fun generateCyclonDXVex() {
+    fun generateCycloneDXVex() {
         val inputFileValue = inputFile.get().asFile
         val outputFileValue = outputFile.get().asFile
         val vexComponentList = vexComponent.get().map { it.build() }

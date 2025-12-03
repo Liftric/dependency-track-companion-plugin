@@ -106,6 +106,7 @@ dependencies {
     "integrationTestImplementation"(gradleTestKit())
     "integrationTestImplementation"(libs.cyclonedxCoreJava)
     "integrationTestImplementation"(libs.junitJupiter)
+    "integrationTestImplementation"(libs.junitPlatform)
     "integrationTestImplementation"(libs.ktorClientCio)
     "integrationTestImplementation"(libs.ktorClientContentNegotiation)
     "integrationTestImplementation"(libs.ktorSerializationKotlinxJson)
