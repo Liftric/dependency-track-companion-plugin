@@ -59,10 +59,7 @@ abstract class GetOutdatedDependenciesTask : DefaultTask() {
             throw GradleException("Project does not have direct dependencies")
         }
 
-        val directDependencies = Json {
-            ignoreUnknownKeys = true
-        }.decodeFromString<List<DirectDependency>>(project.directDependencies)
-
+        val directDependencies = json.decodeFromString<List<DirectDependency>>(project.directDependencies)
 
         // Component API is currently limited to 100 results per request
         var offset = 0
@@ -96,5 +93,9 @@ abstract class GetOutdatedDependenciesTask : DefaultTask() {
         val green = "\u001b[32m"
         val reset = "\u001b[0m"
         println("${purl}: $red${version}$reset -> $green${latestVersion}$reset")
+    }
+
+    private val json = Json {
+        ignoreUnknownKeys = true
     }
 }

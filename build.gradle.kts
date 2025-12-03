@@ -50,9 +50,10 @@ tasks {
     }
     dockerCompose.isRequiredBy(integrationTestTask)
 
-    val pluginPropertiesBuildFolder = file("$buildDir/compileProperties/")
+    val pluginPropertiesBuildFolder = layout.buildDirectory.dir("compileProperties")
     val propertiesTask = register<WriteProperties>("writePluginProperties") {
-        outputFile = pluginPropertiesBuildFolder.resolve("plugin.properties")
+        val output = pluginPropertiesBuildFolder.get().file("plugin.properties").asFile
+        destinationFile = output
         property("vendor", "Liftric")
         property("name", rootProject.name)
         property("version", rootProject.version)
@@ -100,6 +101,7 @@ dependencies {
     implementation(libs.cyclonedxGradlePlugin)
 
     testImplementation(libs.junitJupiter)
+    testImplementation(libs.junitPlatform)
 
     "integrationTestImplementation"(gradleTestKit())
     "integrationTestImplementation"(libs.cyclonedxCoreJava)

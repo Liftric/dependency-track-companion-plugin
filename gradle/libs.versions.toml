@@ -1,0 +1,31 @@
+[versions]
+cyclonedx-core-java = "11.0.1"
+cyclonedx-gradle-plugin = "3.1.0"
+junit = "6.0.1"
+kotlin = "2.2.21"
+ktor = "3.3.3"
+versioning = "3.1.0"
+dockerCompose = "0.17.12"
+gradlePluginPublish = "2.0.0"
+
+[plugins]
+versioning = { id = "net.nemerosa.versioning", version.ref = "versioning" }
+dockerCompose = { id = "com.avast.gradle.docker-compose", version.ref = "dockerCompose" }
+kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+gradlePluginPublish = { id = "com.gradle.plugin-publish", version.ref = "gradlePluginPublish" }
+
+[libraries]
+cyclonedxCoreJava = { module = "org.cyclonedx:cyclonedx-core-java", version.ref = "cyclonedx-core-java" }
+cyclonedxGradlePlugin = { module = "org.cyclonedx:cyclonedx-gradle-plugin", version.ref = "cyclonedx-gradle-plugin" }
+kotlinBom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = "kotlin" }
+kotlinReflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
+kotlinStdlibJdk8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
+ktorClientCio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
+ktorClientCore = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktorClientJson = { module = "io.ktor:ktor-client-json", version.ref = "ktor" }
+ktorClientSerialization = { module = "io.ktor:ktor-client-serialization", version.ref = "ktor" }
+ktorClientContentNegotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktorSerializationKotlinxJson = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+junitJupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
+junitPlatform = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit" }
