@@ -13,12 +13,12 @@ import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
 import org.cyclonedx.model.*
+import org.cyclonedx.model.metadata.ToolInformation
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.tasks.*
 import java.util.*
-
 
 abstract class GenerateVexTask : DefaultTask() {
     @get:InputFile
@@ -36,7 +36,7 @@ abstract class GenerateVexTask : DefaultTask() {
     private val vexFile = Bom()
 
     @TaskAction
-    fun generateCyclonDXVex() {
+    fun generateCycloneDXVex() {
         val inputFileValue = inputFile.get().asFile
         val outputFileValue = outputFile.get().asFile
         val vexComponentList = vexComponent.get().map { it.build() }
@@ -81,12 +81,17 @@ abstract class GenerateVexTask : DefaultTask() {
         vexFile.metadata = Metadata()
         vexFile.metadata.timestamp = Date()
         vexFile.metadata.component = sbom.metadata.component ?: Component()
-        val pluginData = Tool().apply {
-            vendor = props.getProperty("vendor")
+        val pluginData = Component().apply {
+            manufacturer = OrganizationalEntity().apply {
+                name = props.getProperty("vendor")
+            }
             name = props.getProperty("name")
             version = props.getProperty("version")
+            type = Component.Type.LIBRARY
         }
-        vexFile.metadata.tools = listOf(pluginData)
+        vexFile.metadata.toolChoice = ToolInformation().apply {
+            components = listOf(pluginData)
+        }
     }
 
     private fun readPluginProperties(): Properties {

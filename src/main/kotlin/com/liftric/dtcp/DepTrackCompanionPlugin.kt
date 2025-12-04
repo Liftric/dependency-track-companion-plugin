@@ -15,10 +15,10 @@ class DepTrackCompanionPlugin : Plugin<Project> {
             project.extensions.create(extensionName, DepTrackCompanionExtension::class.java, project)
 
         extension.inputFile.convention(
-            project.layout.buildDirectory.file("reports/bom.json")
+            project.layout.buildDirectory.file("reports/cyclonedx/bom.json")
         )
         extension.outputFile.convention(
-            project.layout.buildDirectory.file("reports/vex.json")
+            project.layout.buildDirectory.file("reports/cyclonedx/vex.json")
         )
         extension.autoCreate.convention(false)
 
@@ -38,7 +38,7 @@ class DepTrackCompanionPlugin : Plugin<Project> {
 
         val generateSbom = project.tasks.register("generateSbom") { task ->
             task.group = taskGroup
-            task.description = "Generate SBOM file"
+            task.description = "Generate aggregated SBOM file"
             task.dependsOn("cyclonedxBom")
         }
 

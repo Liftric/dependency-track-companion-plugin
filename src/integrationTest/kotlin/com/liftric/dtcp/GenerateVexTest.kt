@@ -8,9 +8,6 @@ import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.io.File
-import java.nio.file.Files
-import java.nio.file.Paths
-import java.nio.file.StandardCopyOption
 import org.cyclonedx.parsers.JsonParser
 
 class GenerateVexTest: IntegrationTestBase() {
@@ -62,7 +59,7 @@ dependencyTrackCompanion {
             .withArguments("build", "generateVex")
             .withPluginClasspath().build()
 
-        val generatedVexFile = projectDir.resolve("build/reports/vex.json")
+        val generatedVexFile = projectDir.resolve("build/reports/cyclonedx/vex.json")
         assertTrue(generatedVexFile.exists())
         assertTrue(JsonParser().isValid(generatedVexFile))
 
