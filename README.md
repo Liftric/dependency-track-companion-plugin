@@ -1,3 +1,10 @@
+> [!IMPORTANT]
+> **This repository is archived and read-only as of 29th June 2026.**
+>
+> Dependency Track is being substantially refactored for v5, and the Dependency Track version this plugin targets reaches end-of-life within ~6 months. Since the plugin depends on API behaviour that will no longer be supported, it is no longer maintained, and issues and pull requests are closed.
+>
+> If you still rely on this plugin, please **fork it** and adapt it to the Dependency Track v5 API, or move to an actively maintained alternative.
+
 # Gradle Dependency Track Companion w Plugin
 
 This Gradle plugin is designed to ease the process of working with [Dependency Track](https://dependencytrack.org/), a Continuous SBOM Analysis Platform. With this plugin, you can automate the upload process of SBOM files, generate Vex files for component or vulnerability suppression, and more.
